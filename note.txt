@@ -1,0 +1,11 @@
+Employee:
+
+    int id
+    string username
+    string password
+    string first name
+    string last name
+    string position
+    int salary
+    date hiring date
+    date date of birth
