@@ -1,10 +1,10 @@
 FROM node:18
 
-WORKDIR /backend
+WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN npm install
+RUN npm install && npm uninstall bcrypt && npm install bcrypt
 
 COPY . .
 

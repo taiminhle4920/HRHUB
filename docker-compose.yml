@@ -3,18 +3,21 @@ version: "3.8"
 services:
   starter_app:
     build: ./starter_app
-    container_name: starter_app_c
     ports:
       - '3000:3000'
     
     # volumes:
     #   - ./starter_app:/app
     #   - ./app/node_modules
-    stdin_open: true
-    tty: true
+    # stdin_open: true
+    # tty: true
 
   backend:
-    image: backend-image
+    build: ./backend
+    # image: backend
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     ports:
       - "8080:8080"
     
