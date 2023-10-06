@@ -5,6 +5,7 @@ import {
 import MainLayout from '../layouts/MainLayout';
 import ConsoleLayout from '../layouts/ConsoleLayout';
 import Home from '../pages/Home';
+import About from '../pages/About';
 import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Signup from '../pages/Signup';
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="" element={<Home />} />
+            <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />
             <Route path="signup" element={<Signup />} />

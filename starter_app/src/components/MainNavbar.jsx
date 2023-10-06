@@ -6,9 +6,10 @@ import logo from './logo.svg';
 function MainNavbar() {
   const items = [
     { path: '/', title: 'Home' },
-    { path: '/login', title: 'Login' },
+    // { path: '/login', title: 'Login' },
+    { path: '/About', title: 'About' },
     // { path: '/logout', title: 'Logout' },
-    { path: '/signup', title: 'Signup' },
+    // { path: '/signup', title: 'Signup' },
   ];
 
   return (
