@@ -1,11 +1,73 @@
 Employee:
 
-    int id
+    int emp_no
+    string birth_date
+    string first_name
+    string last_name
+    string gender
+    string titles
+    int salary
+    string hiring date
     string username
     string password
-    string first name
-    string last name
-    string position
-    int salary
-    date hiring date
-    date date of birth
+
+
+
+APIs:
+
+sign_up:
+	param
+		emp_no
+		email
+		password
+	
+	return
+		success/fail
+
+Login:
+	param
+		email
+		password
+	
+	return
+		success/fail
+		role
+
+Logout:
+	param
+
+	return
+
+change_name:
+	param
+		userid
+		new_first_name
+		new_last_name
+		
+	return
+		success/fail
+
+
+
+change_position:
+	param
+		userid
+		
+	return
+		success/fail
+
+change_salary:
+	param
+		userid
+		
+	return
+		success/fail
+
+get_all_users:
+	param
+		userid
+	
+	return
+		json of all users
+
+get_

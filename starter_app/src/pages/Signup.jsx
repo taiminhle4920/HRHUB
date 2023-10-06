@@ -54,7 +54,7 @@ function Signup() {
         <Form className="row g-2" noValidate>
           <i className="bi bi-file-lock-fill auth-icon mt-3 text-center"/>
           <p className="fw-normal text-center">Fill up the form and then click <strong>Sign up</strong> button to sign up.</p>
-          <Form.Group as={Col} lg="6" controlId="inputFirstName">
+          {/* <Form.Group as={Col} lg="6" controlId="inputFirstName">
             <FormLabel>First Name</FormLabel>
             <FormControl type="text"
                          isInvalid={errors.firstname}
@@ -79,6 +79,23 @@ function Signup() {
               {errors.lastname?.type === 'required' && 'Last name is required'}
               {errors.lastname?.type === 'pattern' && 'No special characters allowed except hyphen'}
             </Form.Control.Feedback>
+          </Form.Group> */}
+                    <Form.Group as={Col} lg="12" controlId="inputemp_nu">
+            <FormLabel>Employee ID</FormLabel>
+            <FormControl type="text"
+                         isInvalid={errors.emp_nu}
+                         placeholder="employee ID"
+                         {
+                           ...register('email', {
+                             required: true,
+                             pattern: emailPattern,
+                           })
+                         }
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.emp_nu?.type === 'required' && 'Email is required'}
+              {errors.emp_nu?.type === 'pattern' && 'Invalid email'}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} lg="12" controlId="inputEmail">
             <FormLabel>Email</FormLabel>
@@ -88,7 +105,7 @@ function Signup() {
                          {
                            ...register('email', {
                              required: true,
-                             pattern: emailPattern,
+                             //pattern: emailPattern,
                            })
                          }
             />
@@ -97,7 +114,7 @@ function Signup() {
               {errors.email?.type === 'pattern' && 'Invalid email'}
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="12" controlId="inputUsername">
+          {/* <Form.Group as={Col} md="12" controlId="inputUsername">
             <Form.Label>Username</Form.Label>
             <InputGroup hasValidation>
               <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
@@ -111,7 +128,7 @@ function Signup() {
                 {errors.username && 'Username is required'}
               </Form.Control.Feedback>
             </InputGroup>
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group as={Col} lg="12" controlId="inputPassword">
             <FormLabel>Password</FormLabel>
             <FormControl type="password"
