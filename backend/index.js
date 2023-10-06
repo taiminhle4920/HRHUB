@@ -21,12 +21,26 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+app.post('/login', (req, res) => {
+  const{email, password} = req.body;
+  console.log(req.body);
+  return res.status(201).json({message: "Login from backend"});
+})
+
+app.post('/logout', (req, res) => {
+  console.log(req.body);
+  return res.status(201).json({message: "Logout from backend"});
+})
+
 
 app.post("/signup", async (req, res) => {
-  const{firstName, lastName, email, password, dob} = req.body;
+  const{employeeId, email, password} = req.body;
+  console.log(employeeId, email, password);
 
   const check = isEmail(email);
   console.log(check);
+  return res.status(201).json({message: "Added new user", email});
+
   if (!(email && password && firstName && lastName && dob)) {
     return res.status(400).send("All input is required");
   }

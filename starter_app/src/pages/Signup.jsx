@@ -12,12 +12,15 @@ import useAuth from '../hooks/useAuth';
 
 import './signup.css';
 
+import axios from 'axios';
+
 function Signup() {
   const title = 'Signup';
 
   const [isLoading, setIsLoading] = useState(false);
   const { addUser } = useAuth();
   const navigate = useNavigate();
+
   const {
     register, handleSubmit, formState: { errors },
   } = useForm();
@@ -31,9 +34,12 @@ function Signup() {
   const handleSignup = async (data) => {
     try {
       setIsLoading(true);
-      const user = await addUser(data);
+      //const user = await addUser(data);
+      console.log(data.employeeId, data.email, data.password)
+      const res = await axios.post(`http://localhost:8080/signup`, {employeeId: data.employeeId, email: data.email, password: data.password});
+
       // eslint-disable-next-line no-console
-      console.log(`signup successful, user: ${user}`);
+      console.log(`signup successful, user: ${res.data.email}`);
       setIsLoading(false);
       navigate('/login');
     } catch (err) {
@@ -54,47 +60,20 @@ function Signup() {
         <Form className="row g-2" noValidate>
           <i className="bi bi-file-lock-fill auth-icon mt-3 text-center"/>
           <p className="fw-normal text-center">Fill up the form and then click <strong>Sign up</strong> button to sign up.</p>
-          {/* <Form.Group as={Col} lg="6" controlId="inputFirstName">
-            <FormLabel>First Name</FormLabel>
-            <FormControl type="text"
-                         isInvalid={errors.firstname}
-                         placeholder="First Name"
-                         {...register('firstname', { required: true })}
-            />
-            <Form.Control.Feedback type="invalid">First name is required</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} lg="6" controlId="inputLastName">
-            <FormLabel>Last Name</FormLabel>
-            <FormControl type="text"
-                         isInvalid={errors.lastname}
-                         placeholder="Last Name"
-                         {
-                           ...register('lastname', {
-                             required: true,
-                             pattern: namePattern,
-                           })
-                         }
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.lastname?.type === 'required' && 'Last name is required'}
-              {errors.lastname?.type === 'pattern' && 'No special characters allowed except hyphen'}
-            </Form.Control.Feedback>
-          </Form.Group> */}
-                    <Form.Group as={Col} lg="12" controlId="inputemp_nu">
+            <Form.Group as={Col} lg="12" controlId="inputemployeeId">
             <FormLabel>Employee ID</FormLabel>
             <FormControl type="text"
-                         isInvalid={errors.emp_nu}
+                         isInvalid={errors.employeeId}
                          placeholder="employee ID"
                          {
-                           ...register('email', {
-                             required: true,
-                             pattern: emailPattern,
+                           ...register('employeeId', {
+                             required: true
                            })
                          }
             />
             <Form.Control.Feedback type="invalid">
-              {errors.emp_nu?.type === 'required' && 'Email is required'}
-              {errors.emp_nu?.type === 'pattern' && 'Invalid email'}
+              {errors.employeeId?.type === 'required' && 'Email is required'}
+              {errors.employeeId?.type === 'pattern' && 'Invalid email'}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} lg="12" controlId="inputEmail">
@@ -105,7 +84,7 @@ function Signup() {
                          {
                            ...register('email', {
                              required: true,
-                             //pattern: emailPattern,
+                             pattern: emailPattern,
                            })
                          }
             />
@@ -114,21 +93,6 @@ function Signup() {
               {errors.email?.type === 'pattern' && 'Invalid email'}
             </Form.Control.Feedback>
           </Form.Group>
-          {/* <Form.Group as={Col} md="12" controlId="inputUsername">
-            <Form.Label>Username</Form.Label>
-            <InputGroup hasValidation>
-              <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-              <Form.Control type="text"
-                            isInvalid={errors.username}
-                            placeholder="Username"
-                            aria-describedby="inputGroupPrepend"
-                            {...register('username', { required: true })}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.username && 'Username is required'}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group> */}
           <Form.Group as={Col} lg="12" controlId="inputPassword">
             <FormLabel>Password</FormLabel>
             <FormControl type="password"

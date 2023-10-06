@@ -11,16 +11,19 @@ import useForm from '../hooks/useForm';
 
 import './auth.css';
 
+import axios from 'axios';
+
 function redirectPath(search) {
   const match = search.match(/redirect=(.*)/);
   const redirect = match?.[1];
   return redirect ? decodeURIComponent(redirect) : '/console';
 }
 
-function Login() {
+function Login(){
   const title = 'Login';
 
   const [isLoading, setIsLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -31,14 +34,18 @@ function Login() {
     alertOpts.current.isShow = false;
   };
 
+
   const handleLogin = async (e, data) => {
     // eslint-disable-next-line no-console
     console.log(data.username, data.password);
     try {
       setIsLoading(true);
-      const token = await login(data.username, data.password);
+      //const token = await login(data.username, data.password);
+
+      const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
+
       // eslint-disable-next-line no-console
-      console.log(`login successful, token: ${token}`);
+      console.log(`login successful, token: ${res}`);
       setIsLoading(false);
       navigate(redirectPath(search));
     } catch (err) {
@@ -90,7 +97,7 @@ function Login() {
                          className="form-control form-input-top"
                          isInvalid={errors?.username}
                          placeholder="Username"
-                         onChange={handleChange('username')}
+                         //onChange={handleChange('username')}
             />
             <FormLabel>Username</FormLabel>
           </Form.Group>
