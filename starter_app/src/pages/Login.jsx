@@ -40,12 +40,12 @@ function Login(){
     console.log(data.username, data.password);
     try {
       setIsLoading(true);
-      //const token = await login(data.username, data.password);
+      // const token = await login(data.username, data.password);
 
-      const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
+      // const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
 
-      // eslint-disable-next-line no-console
-      console.log(`login successful, token: ${res}`);
+      // // eslint-disable-next-line no-console
+      // console.log(`login successful, token: ${token}`);
       setIsLoading(false);
       navigate(redirectPath(search));
     } catch (err) {
@@ -97,7 +97,7 @@ function Login(){
                          className="form-control form-input-top"
                          isInvalid={errors?.username}
                          placeholder="Username"
-                         //onChange={handleChange('username')}
+                         onChange={handleChange('username')}
             />
             <FormLabel>Username</FormLabel>
           </Form.Group>

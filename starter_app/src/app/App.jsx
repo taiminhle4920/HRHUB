@@ -25,6 +25,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="" element={<Home />} />
+            <Route path="login/success" element={<About/>} />
+            <Route path="login/error" element={<About />} />
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />

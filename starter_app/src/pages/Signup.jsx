@@ -9,6 +9,7 @@ import {
 import StatusAlert from '../components/StatusAlert';
 import { emailPattern, namePattern } from '../common/constants';
 import useAuth from '../hooks/useAuth';
+import GoogleButton from 'react-google-button'
 
 import './signup.css';
 
@@ -50,6 +51,12 @@ function Signup() {
       setIsLoading(false);
     }
   };
+
+  const redirectToGoogleSSO = async () =>{
+    const googleLoginURL = `http://localhost:8080/api/login/google`
+    const newWindow = window.open(googleLoginURL, "_blank", "width=500, height=600");
+  }
+
 
   return (
     <>
@@ -128,7 +135,12 @@ function Signup() {
             <span className="px-2">Sign up</span>
           </Button>
         </Form>
+
       </main>
+      <div className="container-signup">
+        <GoogleButton 
+            onClick={() => { redirectToGoogleSSO() }}/>
+      </div>
       <StatusAlert show={alertOpts.current.isShow}
                    variant="failure"
                    message={alertOpts.current.message}
