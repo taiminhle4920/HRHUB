@@ -2,6 +2,7 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const User = require("../models/user");
+const userService = require('./models/user-service')
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -17,9 +18,7 @@ passport.use(new GoogleStrategy({
             googleId: profile.id,
         }
 
-        const user = await User.findOrCreate({ 
-            where: { googleId: profile.id }, defaults: defaultUser
-        }).catch((err) => {
+        const user = await userService.findOrCreate(defaultUser).catch((err) => {
             console.log("error signing up", err);
             cb(err, null);
         });
@@ -37,7 +36,7 @@ passport.serializeUser((user, cb) => {
 });
 
 passport.deserializeUser(async (id, cb) => {
-    const user = await User.findOne({ where: { id } }).catch((err) => {
+    const user = await userService.findOne({ where: { id } }).catch((err) => {
         console.log("Err deserializing", err);
         cb(err, null);
     });
