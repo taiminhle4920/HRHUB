@@ -14,7 +14,7 @@ const cookieSession = require("cookie-session");
 const session = require('express-session')
 
 app.use(helmet());
-app.use(cors())
+app.use(cors({origin: "http://localhost:3000", credentials: true}))
 app.use(express.json())
 
 require("./auth/passport");

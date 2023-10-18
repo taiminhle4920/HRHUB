@@ -19,7 +19,7 @@ function Signup() {
   const title = 'Signup';
 
   const [isLoading, setIsLoading] = useState(false);
-  const { addUser } = useAuth();
+  const { addUser, isAuth} = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -53,8 +53,18 @@ function Signup() {
   };
 
   const redirectToGoogleSSO = async () =>{
+    let timer = null;
     const googleLoginURL = `http://localhost:8080/api/login/google`
     const newWindow = window.open(googleLoginURL, "_blank", "width=500, height=600");
+    if (newWindow) {
+      timer = await setInterval(() => {
+        if (newWindow.closed) {
+          console.log("Yay we're authenticated");
+          const user = isAuth();
+          if (timer) clearInterval(timer);
+        }
+      }, 500);
+    }
   }
 
 

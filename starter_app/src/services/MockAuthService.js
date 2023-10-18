@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+
 const keyUser = 'authx.user';
 const registeredUsers = new Map([
   ['admin', {
@@ -30,35 +33,41 @@ function setSession(user, token) {
   localStorage.setItem(keyUser, JSON.stringify(merged));
 }
 
-function getSession() {
-  const user = localStorage.getItem(keyUser);
 
-  return JSON.parse(user);
+async function getSession() {
+  //const user = localStorage.getItem(keyUser);
+  const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
+    console.log("Not properly authenicated");
+  });
+  return JSON.parse(res);
 }
 
-function isAuth() {
-  return !!getSession();
+async function isAuth() {
+  return await !!getSession();
 }
 
 async function login(username, password) {
-  return new Promise((resolve, reject) => {
-    // Using setTimeout to simulate network latency.
-    setTimeout(() => {
-      const found = registeredUsers.get(username);
-      if (!found) {
-        return reject(new Error('user not found'));
-      }
+  // return new Promise((resolve, reject) => {
+  //   // Using setTimeout to simulate network latency.
+  //   setTimeout(() => {
+  //     const found = registeredUsers.get(username);
+  //     if (!found) {
+  //       return reject(new Error('user not found'));
+  //     }
 
-      if (found.password !== password) {
-        return reject(new Error('invalid credentials'));
-      }
+  //     if (found.password !== password) {
+  //       return reject(new Error('invalid credentials'));
+  //     }
 
-      const token = newToken();
-      setSession(found, token);
-      return resolve(token);
-    }, 2000);
-  });
+  //     const token = newToken();
+  //     setSession(found, token);
+  //     return resolve(token);
+  //   }, 2000);
+  // });
+  const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
+  return res;
 }
+
 
 async function logout() {
   return new Promise((resolve) => {
