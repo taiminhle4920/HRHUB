@@ -32,21 +32,30 @@ async function findUserByEmail(email) {
   return await userModel.find({ email: email });
 }
 
-async function findorCreateUser(entry) {
-  const doc = userModel.findOne({
+async function findOrCreateUser(entry) {
+  const doc1 = await userModel.findOne({
      query: {googleId: entry.googleId},
     });
-  if (doc){
-    return doc
+
+  const doc2 = await userModel.findOne({
+      email: entry.email
+     });
+  
+
+  if (doc1 || doc2){
+    if (doc1)
+      return doc1
+    else
+      return doc2
   }
   else{
-    const doc = userModel.insertOne({
+    const doc = await userModel.create({
       employeeId: entry.employeeId, 
       email: entry.email.toLowerCase(), 
       password: entry.password, 
-      googleId: entry.googleId});
+      google_id: entry.googleId});
     
-    return doc.ops[0];
+    return doc;
   }
 }
 
@@ -67,4 +76,4 @@ async function addUser(employeeId, email, password, googleId){
 exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
 exports.addUse = addUser;
-exports.findorCreateUser = findorCreateUser;
+exports.findOrCreateUser = findOrCreateUser;

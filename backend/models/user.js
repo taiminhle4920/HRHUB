@@ -13,12 +13,10 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
         trim: true,
     },
     google_id:{
         type: String,
-        required: true,
     }
 }, {collection : 'User'});
 

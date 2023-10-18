@@ -7,6 +7,7 @@ import ConsoleLayout from '../layouts/ConsoleLayout';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Login from '../pages/Login';
+import LoginSuccess from '../pages/LoginSuccess';
 import Logout from '../pages/Logout';
 import Signup from '../pages/Signup';
 import ForgotPassword from '../pages/ForgotPassword';
@@ -25,7 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="" element={<Home />} />
-            <Route path="login/success" element={<About/>} />
+            <Route path="login/success" element={<LoginSuccess/>} />
             <Route path="login/error" element={<About />} />
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />

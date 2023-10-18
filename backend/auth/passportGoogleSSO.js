@@ -2,7 +2,7 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const User = require("../models/user");
-const userService = require('./models/user-service')
+const userService = require('../models/user-service')
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -11,20 +11,23 @@ passport.use(new GoogleStrategy({
     passReqToCallback: true
 },
     async (req, accessToken, refreshToken, profile, cb) => {
-
         const defaultUser = {
             fullName: `${profile.name.givenName} ${profile.name.familyName}`,
             email: profile.emails[0].value,
             googleId: profile.id,
-        }
+            password: null,
+        };
+        
+        
 
-        const user = await userService.findOrCreate(defaultUser).catch((err) => {
+        const user = await userService.findOrCreateUser(defaultUser).catch((err) => {
             console.log("error signing up", err);
             cb(err, null);
         });
 
-        if (user && user[0])
-            return cb(null, user && user[0]);
+        if (user)
+            console.log("user returned");
+            return cb(null, user);
 
     }
 )
@@ -32,6 +35,7 @@ passport.use(new GoogleStrategy({
 
 passport.serializeUser((user, cb) => {
     console.log("Serializing user: ", user)
+    console.log("user id:", user.id)
     cb(null, user.id);
 });
 

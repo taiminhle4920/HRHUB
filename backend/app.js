@@ -11,6 +11,7 @@ const port = 8080
 const api = require("./api");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
+const session = require('express-session')
 
 app.use(helmet());
 app.use(cors())
@@ -21,8 +22,9 @@ require("./auth/passportGoogleSSO");
 
 app.use(
   cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: ['key1', 'key2'],
+    name: 'session',
+    keys: ['your-secret-key'],
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours (adjust as needed)
   })
 );
 
