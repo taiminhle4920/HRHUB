@@ -29,7 +29,7 @@ mongoose
 
 
 async function findUserByEmail(email) {
-  return await userModel.find({ email: email });
+  return await userModel.findOne({ email: email });
 }
 
 async function findOrCreateUser(entry) {
