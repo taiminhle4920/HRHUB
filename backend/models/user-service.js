@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const userModel = require("./user");
 const dotenv = require("dotenv");
-
+const ObjectId = require('mongodb').ObjectId;
 
 dotenv.config();
 
@@ -29,7 +29,7 @@ mongoose
 
 
 async function findUserByEmail(email) {
-  return await userModel.findOne({ email: email });
+  return await userModel.find({ email: email });
 }
 
 async function findOrCreateUser(entry) {
@@ -59,10 +59,8 @@ async function findOrCreateUser(entry) {
   }
 }
 
-async function findUser(id) {
-  return await userModel.findOne({
-    query: {googleId: id},
-   });
+async function findUserByObjectId(id) {
+  return await userModel.findOne({_id: new ObjectId(id)});
 }
 
 async function addUser(employeeId, email, password, googleId){
@@ -73,6 +71,7 @@ async function addUser(employeeId, email, password, googleId){
       googleId: googleId});
 }
 
+exports.findUserByObjectId = findUserByObjectId;
 exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
 exports.addUse = addUser;
