@@ -42,20 +42,32 @@ app.post('/login', async (req, res) => {
   }
   const manager = await departmentManagerService.findManager(user[0].employeeId);
   const role = manager.length > 0 ? "manager" : "employee";
-  const sessionId = uuidv4();
-  session[sessionId] = {email, emmployeeId: user[0].emmployeeId, role: role};
-  res.set('Set-Cookie', `session=${sessionId}`);
+  const token = jwt.sign({email, role}, 'jwt-secret-token', {expiresIn: '1h'});
+  res.cookie('token', token);
+  // const sessionId = uuidv4();
+  // session[sessionId] = {email, emmployeeId: user[0].emmployeeId, role: role};
+  // res.set('Set-Cookie', `session=${sessionId}`);
+
   return res.json({message: "Login from backend", Status: "Success", role: role});
 });
 
   
 app.post('/logout', (req, res) => {
-  const sessionId = req.headers.cookie?.split('=')[1];
-  delete session[sessionId];
-  res.set('Set-Cookie', `session=null`)
-  return res.status(200).json({message: "Logout from backend"});
-  
-})
+  // Extract the 'token' cookie from the request headers
+  const cookies = req.headers.cookie;
+  if (!cookies || !cookies.includes('token=')) {
+    return res.status(401).json({ message: "Token not found" });
+  }
+
+  // Extract the 'token' value from the cookie string
+  const token = cookies.split('token=')[1].split(';')[0].trim();
+
+  // You may add token validation logic here, if required.
+
+  res.clearCookie('token'); // This clears the cookie in the response (optional)
+  return res.status(200).json({ message: "Logged out successfully" });
+});
+
 
 
 app.post("/signup", async (req, res) => {
