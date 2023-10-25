@@ -11,10 +11,11 @@ const titleService = require('./models/title-service')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const app = express()
+const uuidv4 = require('uuid').v4;
 app.use(cors())
 app.use(express.json())
 const port = 8080
-
+const session = {};
 function isEmail(email) {
   var emailFormat = /^[a-zA-Z0-9_.+]*[a-zA-Z][a-zA-Z0-9_.+]*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   if (email !== '' && email.match(emailFormat)) { return true; }
@@ -41,15 +42,19 @@ app.post('/login', async (req, res) => {
   }
   const manager = await departmentManagerService.findManager(user[0].employeeId);
   const role = manager.length > 0 ? "manager" : "employee";
-  const token = jwt.sign({email: user[0].email, role: role}, 'jwt-secret-ket', {expiresIn: "1h"});
-  res.cookie('token', token, {httpOnly: true});
+  const sessionId = uuidv4();
+  session[sessionId] = {email, emmployeeId: user[0].emmployeeId, role: role};
+  res.set('Set-Cookie', `session=${sessionId}`);
   return res.json({message: "Login from backend", Status: "Success", role: role});
 });
 
   
 app.post('/logout', (req, res) => {
-  res.status('200').json({message: "Logout from backend"});
-  res.end();
+  const sessionId = req.headers.cookie?.split('=')[1];
+  delete session[sessionId];
+  res.set('Set-Cookie', `session=null`)
+  return res.status(200).json({message: "Logout from backend"});
+  
 })
 
 
