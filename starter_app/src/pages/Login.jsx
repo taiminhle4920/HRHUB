@@ -40,14 +40,19 @@ function Login(){
     console.log(data.username, data.password);
     try {
       setIsLoading(true);
-      // const token = await login(data.username, data.password);
+      //const token = await login(data.username, data.password);
 
-      // const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
-
-      // // eslint-disable-next-line no-console
-      // console.log(`login successful, token: ${token}`);
+      const res = await axios.post(`http://localhost:8080/login`, {email: data.username, password: data.password});
+      //get token from response;
+      // eslint-disable-next-line no-console
+      
       setIsLoading(false);
-      navigate(redirectPath(search));
+      if(res.data.role === 'manager'){
+        navigate('/console');
+      }else{
+        navigate('/profile');
+      }
+
     } catch (err) {
       // Need to useRef to avoid cyclic reference of the show state in StatusAlert but we now must set alertOps
       // before a set state call so that StatusAlert can render.
