@@ -1,10 +1,15 @@
 import React from 'react';
 
-import {
-  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers,
-} from '../services/MockAuthService';
+// import {
+//   getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers,
+// } from '../services/MockAuthService';
 
 const AuthContext = React.createContext(null);
+
+const isAuth = async () =>{
+  
+}
+
 
 function AuthProvider({ children, ...rest }) {
   // AuthContext to encapsulate these functions, which are wrappers to the services service.

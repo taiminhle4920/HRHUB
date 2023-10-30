@@ -11,7 +11,7 @@ import useForm from '../hooks/useForm';
 
 import './auth.css';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 function redirectPath(search) {
   const match = search.match(/redirect=(.*)/);
@@ -40,12 +40,10 @@ function Login(){
     console.log(data.username, data.password);
     try {
       setIsLoading(true);
-      // const token = await login(data.username, data.password);
+      const token = await login(data.username, data.password);
 
-      // const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
-
-      // // eslint-disable-next-line no-console
-      // console.log(`login successful, token: ${token}`);
+      // eslint-disable-next-line no-console
+      console.log(`login successful, token: ${token}`);
       setIsLoading(false);
       navigate(redirectPath(search));
     } catch (err) {
