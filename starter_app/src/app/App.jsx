@@ -1,5 +1,5 @@
 import {
-  BrowserRouter, Navigate, Routes, Route,
+  BrowserRouter, Navigate, NavLink ,Routes, Route,
 } from 'react-router-dom';
 
 import MainLayout from '../layouts/MainLayout';
@@ -19,6 +19,7 @@ import Users from '../pages/Users';
 import Settings from '../pages/Settings';
 import AuthProvider from '../hooks/AuthProvider';
 import EmployeeLayout from '../layouts/EmployeeLayout';
+import Sidebar from '../components/Sidebar';
 
 function App() {
   return (
@@ -44,13 +45,15 @@ function App() {
             <Route path="settings" element={<Settings />} />
           </Route>
 
-          <Route path="console" element={<ConsoleLayout />}>  
+          <Route path="/console" component={Sidebar} element={<ConsoleLayout />} >  
             <Route path="" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
             <Route path="apps" element={<Apps />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+
+          <Route path="profile" element={<Profile />} /> 
         </Routes>
       </AuthProvider>
     </BrowserRouter>

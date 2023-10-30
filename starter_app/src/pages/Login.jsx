@@ -12,6 +12,7 @@ import useForm from '../hooks/useForm';
 import './auth.css';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function redirectPath(search) {
   const match = search.match(/redirect=(.*)/);
@@ -45,11 +46,18 @@ function Login(){
       const res = await axios.post(`http://localhost:8080/login`, {email: data.username, password: data.password});
       //get token from response;
       // eslint-disable-next-line no-console
-      
+      console.log(res.data);
       setIsLoading(false);
       if(res.data.role === 'manager'){
+        Cookies.set('token', res.data.token);
+        Cookies.set('role', res.data.role);
+        Cookies.set('employeeId', res.data.employeeId);
         navigate('/console');
       }else{
+        Cookies.set('token', res.data.token);
+        Cookies.set('role', res.data.role);
+        Cookies.set('employeeId', res.data.employeeId);
+        //temporarily navigate to profile page, need to change to /employee
         navigate('/profile');
       }
 

@@ -12,7 +12,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const app = express()
 const uuidv4 = require('uuid').v4;
-app.use(cors())
+const cookieParser = require('cookie-parser');
+app.use(cors({origin: "http://localhost:3000", credentials: true}))
+
+app.use(cookieParser());
 app.use(express.json())
 const port = 8080
 const session = {};
@@ -44,11 +47,11 @@ app.post('/login', async (req, res) => {
   const role = manager.length > 0 ? "manager" : "employee";
   const token = jwt.sign({email, role}, 'jwt-secret-token', {expiresIn: '1h'});
   res.cookie('token', token);
-  // const sessionId = uuidv4();
-  // session[sessionId] = {email, emmployeeId: user[0].emmployeeId, role: role};
-  // res.set('Set-Cookie', `session=${sessionId}`);
+  res.cookie('role', role);
+  res.cookie('employeeId', user[0].employeeId);
 
-  return res.json({message: "Login from backend", Status: "Success", role: role});
+
+  return res.json({message: "Login from backend", Status: "Success", role: role, token: token, employeeId: user[0].employeeId});
 });
 
   
@@ -95,6 +98,34 @@ app.post("/signup", async (req, res) => {
     } else {
       return res.status(500).send("Internal Server Error");
     }
+  }
+});
+
+app.get("/profile", async (req, res) => { 
+  console.log(req.headers);
+  console.log(req.headers['employeeid']);
+  const employeeId = req.headers['employeeid'];
+  if(!employeeId){
+    return res.status(401).json({message: "Unauthorized"});
+  }
+
+  const user = await userService.findUserById(employeeId);
+  const data = await employeeService.findUser(employeeId);
+  console.log(user);
+  console.log(data);
+  if(user && data){
+    const resJson = {
+      employeeId: employeeId,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      birth_date: data.birth_date,
+      email: user[0].email,
+    };
+    console.log(resJson);
+    return res.status(200).json(resJson);
+  }
+  else{
+    return res.status(404).json({message: "User not found"});
   }
 });
 

@@ -8,7 +8,6 @@ import useAuth from '../hooks/useAuth';
 function EmployeeLayout() {
   const auth = useAuth();
   const { pathname } = useLocation();
-
   if (auth.isAuth()) {
     return (
       <>
