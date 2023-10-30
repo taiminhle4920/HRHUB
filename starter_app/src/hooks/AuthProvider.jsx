@@ -1,4 +1,6 @@
 import React from 'react';
+//fix everything here to authorize users and managers
+
 
 // import {
 //   getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers,
