@@ -11,10 +11,9 @@ function ConsoleNavbar() {
   const navigate = useNavigate();
   const auth = useAuth();
   const user = auth.getSession();
-
+  
   const handleLogout = async (e) => {
     e.preventDefault();
-
     await logout();
     navigate('/');
   };

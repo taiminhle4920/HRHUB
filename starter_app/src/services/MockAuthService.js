@@ -22,7 +22,8 @@ function newToken() {
 
 function setSession(user, token) {
   // Remove the password property.
-  const { password, ...rest } = user;
+  //const { password, ...rest } = user;
+  const rest  = user;
 
   // Merge token to the final object.
   const merged = {
@@ -30,20 +31,30 @@ function setSession(user, token) {
     token,
   };
 
+
   localStorage.setItem(keyUser, JSON.stringify(merged));
 }
 
 
-async function getSession() {
-  //const user = localStorage.getItem(keyUser);
-  const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
-    console.log("Not properly authenicated");
-  });
-  return JSON.parse(res);
+function getSession() {
+  const user = localStorage.getItem(keyUser);
+  return JSON.parse(user);
 }
 
-async function isAuth() {
-  return await !!getSession();
+async function getAuth() {
+  const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
+    console.log("Not properly authenicated");
+    return "";
+  });
+  const user = JSON.stringify(res.data._id)
+  const token = newToken();
+  setSession(user, token);
+  return JSON.stringify(res.data);
+}
+
+function isAuth() {
+  const res = getSession();
+  return !!getSession();
 }
 
 async function login(username, password) {
@@ -70,13 +81,20 @@ async function login(username, password) {
 
 
 async function logout() {
-  return new Promise((resolve) => {
-    // Using setTimeout to simulate network latency.
-    setTimeout(() => {
-      localStorage.removeItem(keyUser);
-      resolve();
-    }, 1000);
+  // return new Promise((resolve) => {
+  //   // Using setTimeout to simulate network latency.
+  //   setTimeout(() => {
+  //     localStorage.removeItem(keyUser);
+  //     resolve();
+  //   }, 1000);
+  // });
+
+  const res = await axios.get("http://localhost:8080/api/logout/google", { withCredentials: true}).catch((err) => {
+    console.log("error logging out");
   });
+  console.log(res)
+  localStorage.removeItem(keyUser);
+  return;
 }
 
 async function sendPasswordReset() {
@@ -117,5 +135,5 @@ async function getUsers() {
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected
 // in the useAuth hook.
 export {
-  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers,
+  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, getAuth
 };

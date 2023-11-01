@@ -26,7 +26,6 @@ passport.use(new GoogleStrategy({
         });
 
         if (user)
-            console.log("user returned");
             return cb(null, user);
 
     }
@@ -34,8 +33,7 @@ passport.use(new GoogleStrategy({
 );
 
 passport.serializeUser((user, cb) => {
-    console.log("Serializing user: ", user)
-    console.log("user id:", user.id)
+    // console.log("Serializing user: ", user)
     cb(null, user.id);
 });
 
@@ -46,7 +44,7 @@ passport.deserializeUser(async (id, cb) => {
         cb(err, null);
     });
 
-    console.log("DeSerialized User", user);
+    // console.log("DeSerialized User", user);
 
     if (user) 
         cb(null, user);
