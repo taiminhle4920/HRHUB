@@ -25,3 +25,11 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findManager(employeeId) {
+  return await dmModel.find({ employeeId: employeeId });
+}
+
+
+exports.findManager = findManager;

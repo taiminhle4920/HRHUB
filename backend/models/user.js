@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
     employeeId: {
         type: String,
-
     },
     email: {
         type: String,

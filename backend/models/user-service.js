@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userModel = require("./user");
 const dotenv = require("dotenv");
+const { findUser } = require("./employee-service");
 const ObjectId = require('mongodb').ObjectId;
 
 dotenv.config();
@@ -26,7 +27,9 @@ mongoose
   )
   .catch((error) => console.log(error));
 
-
+async function findUserById(id){
+  return await userModel.find({employeeId: id});
+}
 
 async function findUserByEmail(email) {
   return await userModel.find({ email: email });
@@ -71,6 +74,7 @@ async function addUser(employeeId, email, password, googleId){
       googleId: googleId});
 }
 
+exports.findUserById = findUserById;
 exports.findUserByObjectId = findUserByObjectId;
 exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
