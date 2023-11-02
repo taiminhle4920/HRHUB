@@ -1,6 +1,5 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
 const User = require("../models/user");
 const userService = require('../models/user-service')
 
@@ -18,8 +17,6 @@ passport.use(new GoogleStrategy({
             password: null,
         };
         
-        
-
         const user = await userService.findOrCreateUser(defaultUser).catch((err) => {
             console.log("error signing up", err);
             cb(err, null);
@@ -32,20 +29,23 @@ passport.use(new GoogleStrategy({
 )
 );
 
-passport.serializeUser((user, cb) => {
-    // console.log("Serializing user: ", user)
-    cb(null, user.id);
+passport.serializeUser((user, done) => {
+    console.log("serializing")
+    done(null, user.email);
 });
 
-passport.deserializeUser(async (id, cb) => {
-    console.log(id);
-    const user = await userService.findUserByObjectId(id).catch((err) => {
+passport.deserializeUser(async (email, done) => {
+    console.log("deserializing")
+    const user = await userService.findUserByEmail(email).catch((err) => {
         console.log("Err deserializing", err);
-        cb(err, null);
+        done(err, null);
     });
-
-    // console.log("DeSerialized User", user);
-
-    if (user) 
-        cb(null, user);
+    if (user) {
+        const foundUser = {
+            email: user[0].email,
+            role: "null",
+            employeeId: "null",
+        }
+        done(null, foundUser);
+    }
 })

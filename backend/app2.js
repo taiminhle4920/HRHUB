@@ -1,37 +1,31 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require("helmet");
-const api = require("./api");
-const passport = require("passport");
-const session = require('express-session')
-const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+const userService = require('./models/user-service')
+const User = require('./models/user')
 const bcrypt = require('bcrypt')
-const uuidv4 = require('uuid').v4;
-const cookieParser = require('cookie-parser');
-
 const app = express()
 const port = 8080
 
-app.use(helmet());
+const api = require("./api");
+const passport = require("passport");
+//const cookieSession = require("cookie-session");
+const session = require('express-session')
 
-app.use(cookieParser());
-app.use(express.json());
+app.use(helmet());
+app.use(cors({origin: "http://localhost:3000", credentials: true}))
+app.use(express.json())
 
 app.use(session({
   secret: process.env.SESSION_KEY,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: { 
-    sameSite: 'none',
     secure: false,
-    maxAge: 3600000 * 1, //1 hours
-    domain: "http://localhost:3000",
-    path: "/",
+    maxAge: 3600000 * 1 //1 hours
    }
 }));
-
-app.use(cors({origin: "http://localhost:3000", 
-        credentials: true}))
 
 require("./auth/passport");
 require("./auth/passportGoogleSSO");
