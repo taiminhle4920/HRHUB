@@ -1,12 +1,22 @@
 import { Helmet } from 'react-helmet';
 import Jdenticon from '../components/Jdenticon';
-import useAuth from '../hooks/useAuth';
+//import useAuth from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
+import axios from 'axios';
 function Dashboard() {
   const title = 'Dashboard';
 
-  const { getSession } = useAuth();
-  const user = getSession();
+  // const { getSession } = useAuth();
+  // const user = getSession();
+
+  const [user, setUserData] = useState({});
+  const fetchInfo = async () => {
+    return await axios.get('http://localhost:8080/profile', { withCredentials: true }).then((res) => setUserData(res.data));
+  };
+  useEffect(() => {
+    fetchInfo();
+  }, []);
 
   return (
     <>
@@ -21,9 +31,9 @@ function Dashboard() {
         <div
           className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div className="col p-4 d-flex flex-column position-static">
-            <strong className="d-inline-block mb-2 text-primary fs-5">@{user.username}</strong>
-            <h3 className="mb-0">{user.firstname} {user.lastname}</h3>
-            <p className="card-text mb-auto text-muted">{user.id}</p>
+            <strong className="d-inline-block mb-2 text-primary fs-5">@{user.employeeId}</strong>
+            <h3 className="mb-0">{user.first_name} {user.last_name}</h3>
+            <p className="card-text mb-auto text-muted">{user.employeeId}</p>
             <p className="card-text mb-auto text-muted">{user.email}</p>
             <div className="d-grid d-md-block mt-4">
               <button className="btn btn-outline-secondary btn-sm">Edit</button>

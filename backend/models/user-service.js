@@ -31,6 +31,9 @@ async function findUserById(id){
   return await userModel.find({employeeId: id});
 }
 
+async function findAllUsers(){
+  return await userModel.find();
+}
 async function findUserByEmail(email) {
   return await userModel.find({ email: email });
 }
@@ -80,3 +83,4 @@ exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
 exports.addUse = addUser;
 exports.findOrCreateUser = findOrCreateUser;
+exports.findAllUsers = findAllUsers;

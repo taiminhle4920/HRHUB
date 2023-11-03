@@ -25,3 +25,10 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findAllDepartmentEmployees(){
+  return await deModel.find().limit(1000);
+}
+
+exports.findAllDepartmentEmployees = findAllDepartmentEmployees;

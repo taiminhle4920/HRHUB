@@ -30,4 +30,9 @@ async function findUser(id){
     return await empModel.findOne({emp_no: id});
 }
 
+async function findAllEmployees(){ 
+  return await empModel.find().limit(1000);
+}
+
 exports.findUser = findUser;
+exports.findAllEmployees = findAllEmployees;

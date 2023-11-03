@@ -48,17 +48,16 @@ function Login(){
       // eslint-disable-next-line no-console
       console.log(res.data);
       setIsLoading(false);
+      Cookies.set('expires', res.data.cookie.expires);
+      Cookies.set('role', res.data.role);
+      Cookies.set('employeeId', res.data.employeeId);
+      Cookies.set('authenticated', res.data.authenticated);
+      Cookies.set('employeeName', res.data.employeeName);
       if(res.data.role === 'manager'){
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
         navigate('/console');
       }else{
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
         //temporarily navigate to profile page, need to change to /employee
-        navigate('/profile');
+        navigate('/employee');
       }
 
     } catch (err) {
