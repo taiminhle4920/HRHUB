@@ -8,11 +8,11 @@ const {addUser, getAuth, isAuth} = useAuth();
 const navigate = useNavigate();
 
 useEffect(()=>{
-      const getAuthWrapper = async () =>{
-        const user = await getAuth();
+      const setGoogleUserGoogleWrapper = async () =>{
+        const user = await setGoogleUserGoogle();
         console.log(user);
       };
-      getAuthWrapper();
+      setGoogleUserGoogleWrapper();
       setTimeout(() => {
         navigate('/console');
       }, 100);

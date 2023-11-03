@@ -3,18 +3,17 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
 import ConsoleNavbar from '../components/ConsoleNavbar';
 import SidebarEmployee from '../components/SidebarEmployee';
-//import useAuth from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 import Cookies from 'js-cookie';
 function EmployeeLayout() {
-  //const auth = useAuth();
+  const auth = useAuth();
   const { pathname } = useLocation();
-  const role = Cookies.get('role');
-  const employeeId = Cookies.get('employeeId');
-  const expires = Cookies.get('expires');
-  // if (auth.isAuth()) {
+  // const role = Cookies.get('role');
+  // const employeeId = Cookies.get('employeeId');
+  // const expires = Cookies.get('expires');
   
-
-  if (role === 'employee' && employeeId && expires > Date.now().toString()){
+  const role = auth.getRole();
+  if (role !== null && role === 'employee'){
     return (
       <>
         <ConsoleNavbar />

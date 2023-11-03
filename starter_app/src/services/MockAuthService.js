@@ -20,11 +20,11 @@ function newToken() {
   return (Math.random() * 1000000000).toString(16);
 }
 
-function setSession(user, token) {
+function setUser(user) {
+  console.log(user);
   const currentUser = {
     email: user.email,
     role: user.role !== null ? user.role : null,
-    id: user.employeeId !== null ? user.employeeId : null,
   };
 
   localStorage.setItem(keyUser, JSON.stringify(currentUser));
@@ -37,17 +37,20 @@ function getSession() {
 }
 
 function getRole() {
-  const user = localStorage.getItem(keyUser);
-  return JSON.parse(user.role);
+  const user = JSON.parse(localStorage.getItem(keyUser));
+  if (user!= null)
+    return user.role;
+  else
+    return null;
 }
 
-async function getAuth() {
+async function setGoogleUserGoogle() {
   const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
     console.log("Not properly authenicated");
     return "";
   });
   const token = newToken();
-  setSession(res.data, token);
+  setUser(res.data);
   return JSON.stringify(res.data);
 }
 
@@ -58,7 +61,9 @@ function isAuth() {
 
 async function login(username, password) {
   const res = await axios.post(`http://localhost:8080/api/login`, {email: username, password: password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
-  setSession(res.data, token);
+  //console.log(res);
+  const token = newToken();
+  setUser(res.data.user);
   return res;
 }
 
@@ -118,5 +123,5 @@ async function getUsers() {
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected
 // in the useAuth hook.
 export {
-  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, getAuth, getRole
+  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, setGoogleUserGoogle, getRole
 };
