@@ -25,3 +25,9 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findAllDepartments(){
+  return await deptModel.find();
+}
+exports.findAllDepartments = findAllDepartments;

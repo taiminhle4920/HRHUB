@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
-import useAuth from '../hooks/useAuth';
 import Jdenticon from '../components/Jdenticon';
-
+import axios from 'axios';
 function TableRow({ users }) {
-  if (!users) {
+  if (!users || !Array.isArray(users)) { // add a check to make sure users is an array
     return <></>;
   }
-
   return (
     <>
     {
       users.map((user, i) => (
         <tr key={i} className="align-middle">
           <td>{i}</td>
-          <td>{user.id}</td>
-          <td>{user.username}</td>
-          <td>{user.email}</td>
-          <td>{user.firstname} {user.lastname}</td>
+          <td>{user.emp_no}</td>
+          <td>{user.first_name} {user.last_name}</td>
+          <td>{user.department}</td>
+          <td>{user.hire_date}</td>
+
           <td><Jdenticon name={user.username} height="32px" width="32px" /></td>
         </tr>
       ))
@@ -30,28 +29,16 @@ function TableRow({ users }) {
 function Users() {
   const title = 'Users';
 
-  const { getUsers } = useAuth();
-  const [users, setUsers] = useState();
 
+  const [users, setUsers] = useState({});
+  
+  const fetchInfo = async () => {
+    return await axios.get('http://localhost:8080/users', { withCredentials: true }).then((res) => setUsers(res.data));
+  };
   useEffect(() => {
-    let isMounted = true;
-
-    (async () => {
-      try {
-        const allusers = await getUsers();
-        if (isMounted) {
-          setUsers(allusers);
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-alert
-        alert(`failed to load users: ${err}`);
-      }
-    })();
-
-    // Cleanup callback as the component unmounts.
-    return () => { isMounted = false; };
-  }, [getUsers]);
-
+    fetchInfo();
+  }, []);
+  
   return (
     <>
       <Helmet>
@@ -74,11 +61,10 @@ function Users() {
             <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">User ID</th>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
+              <th scope="col">Employee ID</th>
               <th scope="col">Name</th>
-              <th scope="col">Avatar</th>
+              <th scope="col">Department</th>
+              <th scope="col">Hire Date</th>
             </tr>
             </thead>
             <tbody>
