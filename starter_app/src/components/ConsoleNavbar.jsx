@@ -1,21 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import Jdenticon from './Jdenticon';
-import useAuth from '../hooks/useAuth';
+//import useAuth from '../hooks/useAuth';
 
 import { logout } from '../services/MockAuthService';
 
 import './console-navbar.css';
 import logo from './logo.svg';
-
+import Cookies from 'js-cookie';
 function ConsoleNavbar() {
   const navigate = useNavigate();
-  const auth = useAuth();
-  const user = auth.getSession();
+  //const auth = useAuth();
+  //const user = auth.getSession();
 
+  const user = {};
+  user.username = Cookies.get('employeeName');
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    await logout();
+    //await logout();
+    Cookies.remove('expires');
+    Cookies.remove('role');
+    Cookies.remove('employeeId');
+    Cookies.remove('authenticated');
+    Cookies.remove('employeeName');
+    
     navigate('/');
   };
 

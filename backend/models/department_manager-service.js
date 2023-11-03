@@ -28,7 +28,7 @@ mongoose
 
 
 async function findManager(employeeId) {
-  return await dmModel.find({ employeeId: employeeId });
+  return await dmModel.find({ emp_no: employeeId });
 }
 
 

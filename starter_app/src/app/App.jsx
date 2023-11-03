@@ -39,7 +39,7 @@ function App() {
             <Route path="*" element={<Navigate to="/not-found" />} />
           </Route>
 
-          <Route path="employee" element={<EmployeeLayout />}>
+          <Route path="/employee" element={<EmployeeLayout />}>
             <Route path="profile" element={<Profile />} />
             <Route path="apps" element={<Apps />} />
             <Route path="settings" element={<Settings />} />
@@ -54,6 +54,7 @@ function App() {
           </Route>
 
           <Route path="profile" element={<Profile />} /> 
+          <Route path='users' element={<Users />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

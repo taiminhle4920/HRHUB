@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Spinner } from 'react-bootstrap';
-
+import Cookies from 'js-cookie';
 import useAuth from '../hooks/useAuth';
 
 import './auth.css';
@@ -17,7 +17,12 @@ function Logout() {
   const handleLogout = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-
+    // delete all cookie information
+    Cookies.remove('expires');
+    Cookies.remove('role');
+    Cookies.remove('employeeId');
+    Cookies.remove('authenticated');
+    Cookies.remove('employeeName');
     await logout();
     setIsLoading(false);
     navigate('/');
