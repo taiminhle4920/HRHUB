@@ -25,7 +25,7 @@ function Login(){
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login, getRole} = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
 
@@ -43,20 +43,20 @@ function Login(){
       setIsLoading(true);
       //const token = await login(data.username, data.password);
 
-      const res = await axios.post(`http://localhost:8080/login`, {email: data.username, password: data.password});
-      //get token from response;
-      // eslint-disable-next-line no-console
+      //const res = await axios.post(`http://localhost:8080/api/login`, {email: data.username, password: data.password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
+      const res = await login(data.username, data.password);
       console.log(res.data);
       setIsLoading(false);
-      if(res.data.role === 'manager'){
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
+      const role = getRole();
+      if(role === 'manager'){
+        // Cookies.set('token', res.data.token);
+        // Cookies.set('role', res.data.role);
+        // Cookies.set('employeeId', res.data.employeeId);
         navigate('/console');
       }else{
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
+        // Cookies.set('token', res.data.token);
+        // Cookies.set('role', res.data.role);
+        // Cookies.set('employeeId', res.data.employeeId);
         //temporarily navigate to profile page, need to change to /employee
         navigate('/profile');
       }

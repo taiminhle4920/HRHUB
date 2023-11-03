@@ -17,21 +17,20 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 
+app.use(cors({origin: "http://localhost:3000", 
+        credentials: true}))
+
 app.use(session({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
   cookie: { 
-    sameSite: 'none',
     secure: false,
     maxAge: 3600000 * 1, //1 hours
-    domain: "http://localhost:3000",
-    path: "/",
+    // domain: "http://localhost:3000",
+    // path: "/",
    }
 }));
-
-app.use(cors({origin: "http://localhost:3000", 
-        credentials: true}))
 
 require("./auth/passport");
 require("./auth/passportGoogleSSO");

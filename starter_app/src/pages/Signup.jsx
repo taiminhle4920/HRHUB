@@ -39,7 +39,7 @@ function Signup() {
       setIsLoading(true);
       //const user = await addUser(data);
       console.log(data.employeeId, data.email, data.password)
-      const res = await axios.post(`http://localhost:8080/signup`, {employeeId: data.employeeId, email: data.email, password: data.password});
+      const res = await axios.post(`http://localhost:8080/api/signup`, {employeeId: data.employeeId, email: data.email, password: data.password});
 
       // eslint-disable-next-line no-console
       console.log(`signup successful, user: ${res.data.email}`);
