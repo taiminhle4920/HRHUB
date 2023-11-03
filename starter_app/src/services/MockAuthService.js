@@ -21,18 +21,13 @@ function newToken() {
 }
 
 function setSession(user, token) {
-  // Remove the password property.
-  //const { password, ...rest } = user;
-  const rest  = user;
-
-  // Merge token to the final object.
-  const merged = {
-    ...rest,
-    token,
+  const currentUser = {
+    email: user.email,
+    role: user.role !== null ? user.role : null,
+    id: user.employeeId !== null ? user.employeeId : null,
   };
 
-
-  localStorage.setItem(keyUser, JSON.stringify(merged));
+  localStorage.setItem(keyUser, JSON.stringify(currentUser));
 }
 
 
@@ -41,14 +36,18 @@ function getSession() {
   return JSON.parse(user);
 }
 
+function getRole() {
+  const user = localStorage.getItem(keyUser);
+  return JSON.parse(user.role);
+}
+
 async function getAuth() {
   const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
     console.log("Not properly authenicated");
     return "";
   });
-  const user = JSON.stringify(res.data._id)
   const token = newToken();
-  setSession(user, token);
+  setSession(res.data, token);
   return JSON.stringify(res.data);
 }
 
@@ -58,24 +57,8 @@ function isAuth() {
 }
 
 async function login(username, password) {
-  // return new Promise((resolve, reject) => {
-  //   // Using setTimeout to simulate network latency.
-  //   setTimeout(() => {
-  //     const found = registeredUsers.get(username);
-  //     if (!found) {
-  //       return reject(new Error('user not found'));
-  //     }
-
-  //     if (found.password !== password) {
-  //       return reject(new Error('invalid credentials'));
-  //     }
-
-  //     const token = newToken();
-  //     setSession(found, token);
-  //     return resolve(token);
-  //   }, 2000);
-  // });
-  const res = await axios.post(`http://localhost:8080/login`, {username: data.username, password: data.password});
+  const res = await axios.post(`http://localhost:8080/api/login`, {email: username, password: password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
+  setSession(res.data, token);
   return res;
 }
 
@@ -135,5 +118,5 @@ async function getUsers() {
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected
 // in the useAuth hook.
 export {
-  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, getAuth
+  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, getAuth, getRole
 };
