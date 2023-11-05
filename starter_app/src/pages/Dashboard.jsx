@@ -1,18 +1,19 @@
 import { Helmet } from 'react-helmet';
 import Jdenticon from '../components/Jdenticon';
-//import useAuth from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 function Dashboard() {
   const title = 'Dashboard';
 
-  // const { getSession } = useAuth();
-  // const user = getSession();
+  const { getUserProfile } = useAuth();
+  const [user, setUser] = useState({});
 
-  const [user, setUserData] = useState({});
   const fetchInfo = async () => {
-    return await axios.get('http://localhost:8080/profile', { withCredentials: true }).then((res) => setUserData(res.data));
+    const userData = await getUserProfile();
+    setUser(userData);
+    console.log("test")
   };
   useEffect(() => {
     fetchInfo();

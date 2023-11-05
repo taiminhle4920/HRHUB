@@ -9,14 +9,17 @@ import Cookies from 'js-cookie';
 function Profile() {
   const title = 'Profile';
 
+  const { getUserProfile } = useAuth();
+  const [user, setUser] = useState({});
 
-  const [user, setUserData] = useState({});
   const fetchInfo = async () => {
-    return await axios.get('http://localhost:8080/profile', { withCredentials: true }).then((res) => setUserData(res.data));
+    const userData = await getUserProfile();
+    setUser(userData);
   };
   useEffect(() => {
     fetchInfo();
   }, []);
+
   return (
     <>
       <Helmet>

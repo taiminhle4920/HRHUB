@@ -30,4 +30,9 @@ mongoose
 async function findAllDepartments(){
   return await deptModel.find();
 }
+
+async function findDepartmentByDeptId(id){
+  return await deptModel.findone({dept_no: });
+}
+
 exports.findAllDepartments = findAllDepartments;

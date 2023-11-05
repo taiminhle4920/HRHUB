@@ -2,23 +2,7 @@ import axios from 'axios';
 
 
 const keyUser = 'authx.user';
-const registeredUsers = new Map([
-  ['admin', {
-    id: 'uid:0', username: 'admin', email: 'admin@example.com', password: 'qwerty', firstname: 'App', lastname: 'Admin',
-  }],
-  ['lee', {
-    id: 'uid:973236115', username: 'lee', email: 'lee@acme.com', password: '12345', firstname: 'Steve', lastname: 'Lee',
-  }],
-]);
 
-function newUID() {
-  const epoch = Math.floor(new Date() / 1000).toString();
-  return `uid:${epoch}`;
-}
-
-function newToken() {
-  return (Math.random() * 1000000000).toString(16);
-}
 
 function setUser(user) {
   console.log(user);
@@ -44,14 +28,23 @@ function getRole() {
     return null;
 }
 
-async function setGoogleUserGoogle() {
-  const res = await axios.get("http://localhost:8080/api/auth/user", {withCredentials: true}).catch((err) => {
+async function getRoleFromEmployeeId(employeeId) {
+  const res = await axios.post(`http://localhost:8080/api/auth/uploadEmployeeId`, {employeeId: employeeId}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
+  setUser(res.data.user)
+  const user = JSON.parse(localStorage.getItem(keyUser));
+  if (user!= null && user.role!=null)
+    return user.role;
+  else
+    return null;
+}
+
+async function setGoogleUser() {
+  const res = await axios.get("http://localhost:8080/api/auth/googleUser", {withCredentials: true}).catch((err) => {
     console.log("Not properly authenicated");
     return "";
   });
-  const token = newToken();
-  setUser(res.data);
-  return JSON.stringify(res.data);
+  setUser(res.data.user);
+  return JSON.stringify(res.data.user);
 }
 
 function isAuth() {
@@ -62,21 +55,12 @@ function isAuth() {
 async function login(username, password) {
   const res = await axios.post(`http://localhost:8080/api/login`, {email: username, password: password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
   //console.log(res);
-  const token = newToken();
   setUser(res.data.user);
   return res;
 }
 
 
 async function logout() {
-  // return new Promise((resolve) => {
-  //   // Using setTimeout to simulate network latency.
-  //   setTimeout(() => {
-  //     localStorage.removeItem(keyUser);
-  //     resolve();
-  //   }, 1000);
-  // });
-
   const res = await axios.get("http://localhost:8080/api/logout/google", { withCredentials: true}).catch((err) => {
     console.log("error logging out");
   });
@@ -94,34 +78,41 @@ async function sendPasswordReset() {
   });
 }
 
-async function addUser(user) {
-  return new Promise((resolve) => {
-    // Using setTimeout to simulate network latency.
-    const id = newUID();
-    setTimeout(() => {
-      const merged = {
-        ...user,
-        id,
-      };
-
-      registeredUsers.set(user.username, merged);
-      resolve(merged);
-    }, 1000);
+async function getUserProfile() {
+  const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+    console.log("error getting user profile");
+    return null;
   });
+  if (res.data != null)
+    return res.data;
+  else
+    return null;
 }
 
-async function getUsers() {
-  return new Promise((resolve) => {
-    // Using setTimeout to simulate network latency.
-    setTimeout(() => {
-      const users = Array.from(registeredUsers.values());
-      resolve(users);
-    }, 1000);
+async function changeUserProfile() {
+  const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+    console.log("error getting user profile");
+    return null;
   });
+  if (res.data != null)
+    return res.data;
+  else
+    return null;
+}
+
+async function getUserPayroll() {
+  const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+    console.log("error getting user profile");
+    return null;
+  });
+  if (res.data != null)
+    return res.data;
+  else
+    return null;
 }
 
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected
 // in the useAuth hook.
 export {
-  getSession, isAuth, login, logout, sendPasswordReset, addUser, getUsers, setGoogleUserGoogle, getRole
+  getSession, isAuth, login, logout, sendPasswordReset, setGoogleUser, getRole, getRoleFromEmployeeId, getUserProfile
 };

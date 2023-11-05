@@ -13,7 +13,7 @@ function EmployeeLayout() {
   // const expires = Cookies.get('expires');
   
   const role = auth.getRole();
-  if (role !== null && role === 'employee'){
+  if (role && role === 'employee'){
     return (
       <>
         <ConsoleNavbar />

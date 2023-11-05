@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    google_id:{
+    googleId:{
         type: String,
     }
 }, {collection : 'User'});

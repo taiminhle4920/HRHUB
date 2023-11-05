@@ -41,8 +41,8 @@ router.post('/login', async (req, res) => {
       role: role,
       employeeId: user[0].employeeId,
    };
-    console.log(req.session.id)
     req.session.user = sessionUser;
+    req.user = sessionUser;
     // req.session.user = sessionUser
     res.json(req.session)
     // return res.json({message: "Login from backend", Status: "Success", role: role, employeeId: user[0].employeeId});

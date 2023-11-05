@@ -19,8 +19,8 @@ router.get("/auth/google/callback",
     
     (req, res) => {
         console.log("User: ", req.user);
+        req.session.user = req.user;
         res.json(req.session)
-        //res.send("You have been signed in")
     }
 );
 

@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function LoginSuccess() {
 
-const {addUser, getAuth, isAuth} = useAuth();
+const {setGoogleUser, getRole} = useAuth();
 const navigate = useNavigate();
 
 useEffect(()=>{
-      const setGoogleUserGoogleWrapper = async () =>{
-        const user = await setGoogleUserGoogle();
+      const setGoogleUserWrapper = async () =>{
+        const user = await setGoogleUser();
         console.log(user);
+        const role = getRole();
+        console.log(role)
+        if (role==null)
+          navigate('/employeeid');
+        else if(role === "employee")
+          navigate('/employee')
+        else if(role === "manager")
+        navigate('/console')
       };
-      setGoogleUserGoogleWrapper();
-      setTimeout(() => {
-        navigate('/console');
-      }, 100);
+
+      setGoogleUserWrapper();
 }, []);
 
   return (
@@ -23,6 +29,7 @@ useEffect(()=>{
       Login Success
     </div>
   );
+
 }
 
 export default LoginSuccess;

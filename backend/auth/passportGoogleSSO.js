@@ -9,21 +9,39 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:8080/api/auth/google/callback",
     passReqToCallback: true
 },
-    async (req, accessToken, refreshToken, profile, cb) => {
-        const defaultUser = {
+    async (req, accessToken, refreshToken, profile, done) => {
+        const profileUser = {
             fullName: `${profile.name.givenName} ${profile.name.familyName}`,
             email: profile.emails[0].value,
             googleId: profile.id,
             password: null,
         };
+
+        const existingUser = await userService.findUserByEmail(profileUser.email).catch((err) => {
+            console.log("error signing up", err);
+            return done(err, null);
+        });
+        if (existingUser[0]){
+            if (existingUser[0].googleId == null)
+                return done(null, false);
+            else
+                return done(null, existingUser[0]);
+        }
+        else{
+            const newUser = await userService.addUser(null, profileUser.email, null, profileUser.googleId).catch((err) => {
+                console.log("error signing up", err);
+                return done(err, null);
+            });
+            return done(null, newUser);
+        }
         
         const user = await userService.findOrCreateUser(defaultUser).catch((err) => {
             console.log("error signing up", err);
-            cb(err, null);
+            done(err, null);
         });
 
         if (user)
-            return cb(null, user);
+            return done(null, user);
 
     }
 )
