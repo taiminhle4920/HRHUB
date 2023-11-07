@@ -21,7 +21,7 @@ import Settings from '../pages/Settings';
 import AuthProvider from '../hooks/AuthProvider';
 import EmployeeLayout from '../layouts/EmployeeLayout';
 import Sidebar from '../components/Sidebar';
-
+import EditEmployeeProfile from '../pages/EditEmployeeProfile';
 function App() {
   return (
     <BrowserRouter>
@@ -54,7 +54,8 @@ function App() {
             <Route path="apps" element={<Apps />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
-          </Route>
+            <Route path="editprofile/:id" element={<EditEmployeeProfile />} />
+            </Route>
 
           <Route path="profile" element={<Profile />} /> 
           <Route path='users' element={<Users />} />

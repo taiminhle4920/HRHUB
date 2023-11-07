@@ -25,3 +25,9 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findTitleByEmpId(id){
+    return await titleModel.find({emp_no: id});
+}
+exports.findTitleByEmpId = findTitleByEmpId;
