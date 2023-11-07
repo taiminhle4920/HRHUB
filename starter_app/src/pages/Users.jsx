@@ -33,7 +33,7 @@ function Users() {
   const [users, setUsers] = useState({});
   
   const fetchInfo = async () => {
-    return await axios.get('http://localhost:8080/users', { withCredentials: true }).then((res) => setUsers(res.data));
+    return await axios.get('http://localhost:8080/api/users', { withCredentials: true }).then((res) => setUsers(res.data));
   };
   useEffect(() => {
     fetchInfo();

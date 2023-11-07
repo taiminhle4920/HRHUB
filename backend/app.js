@@ -21,7 +21,8 @@ app.use(cors({origin: "http://localhost:3000",
         credentials: true}))
 
 app.use(session({
-  secret: process.env.SESSION_KEY,
+  // secret: process.env.SESSION_KEY,
+  secret: 'secret',
   resave: false,
   saveUninitialized: false,
   cookie: { 

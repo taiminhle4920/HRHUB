@@ -3,7 +3,8 @@ const { isUserAuthenticated } = require("../middlewares/auth");
 const userService = require('../models/user-service')
 const employeeService = require('../models/employee-service')
 const departmentManagerService = require('../models/department_manager-service')
-
+const departmentService = require('../models/department-service')
+const departmentEmployeeService = require('../models/department_employee-service')
 const router = express.Router();
 
 router.get("/auth/googleUser", isUserAuthenticated, async (req, res) => {
@@ -71,4 +72,35 @@ router.post("/auth/uploadEmployeeId", isUserAuthenticated, async (req, res) => {
   });
 
 
+
+router.get("/users", async (req, res) => {
+  if (!req.session.role === "manager") {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  
+  const employees = await employeeService.findAllEmployees();
+  const departments = await departmentService.findAllDepartments();
+  const deptEmps = await departmentEmployeeService.findAllDepartmentEmployees();
+
+  const users = employees.map((employee) => {
+    const deptEmp = deptEmps.find((deptEmp) => deptEmp.emp_no === employee.emp_no);
+    if (!deptEmp) {
+      return null; // Skip this iteration of the loop
+    }
+    const department = departments.find((department) => department.dept_no === deptEmp.dept_no);
+    if (!department) {
+      return null; // Skip this iteration of the loop
+    }
+    return {
+      emp_no: employee.emp_no,
+      first_name: employee.first_name,
+      last_name: employee.last_name,
+      department: department.dept_name,
+      hire_date: employee.hire_date,
+    };
+  }).filter(user => user !== null); // Remove any null values from the array
+  return res.status(200).json(users);
+});
+  
 module.exports = router;
