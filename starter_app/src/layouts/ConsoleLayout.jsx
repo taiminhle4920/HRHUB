@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import ConsoleNavbar from '../components/ConsoleNavbar';
 import Sidebar from '../components/Sidebar';
 import useAuth from '../hooks/useAuth';
-import SearchBar from '../components/SearchBar';
 import Cookies from 'js-cookie';
 function ConsoleLayout() {
   const auth = useAuth();
@@ -19,7 +18,7 @@ function ConsoleLayout() {
     return (
       <>
         <ConsoleNavbar />
-        <SearchBar />
+
         <div className="container-fluid">
           <div className="row">
             <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
