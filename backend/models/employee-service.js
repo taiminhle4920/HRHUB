@@ -34,5 +34,11 @@ async function findAllEmployees(){
   return await empModel.find().limit(1000);
 }
 
+async function findEmployeeByName(first_name, last_name){
+  return await empModel.find({first_name: first_name, last_name: last_name});
+}
+
+
 exports.findUser = findUser;
 exports.findAllEmployees = findAllEmployees;
+exports.findEmployeeByName = findEmployeeByName;

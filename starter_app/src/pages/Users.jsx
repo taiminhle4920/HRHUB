@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 
 import Jdenticon from '../components/Jdenticon';
 import axios from 'axios';
+
 function TableRow({ users }) {
   if (!users || !Array.isArray(users)) { // add a check to make sure users is an array
     return <></>;
@@ -29,16 +30,31 @@ function TableRow({ users }) {
 function Users() {
   const title = 'Users';
 
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const [users, setUsers] = useState({});
-  
-  const fetchInfo = async () => {
-    return await axios.get('http://localhost:8080/api/users', { withCredentials: true }).then((res) => setUsers(res.data));
+  const fetchUsers = async (searchTerm) => {
+    const url = searchTerm ? `http://localhost:8080/api/users?term=${searchTerm}` : 'http://localhost:8080/api/users';
+    return await axios.get(url, { withCredentials: true }).then((res) => setUsers(res.data));
   };
-  useEffect(() => {
-    fetchInfo();
-  }, []);
+
   
+  // const fetchInfo = async () => {
+  //   return await axios.get('http://localhost:8080/api/users', { withCredentials: true }).then((res) => setUsers(res.data));
+  // };
+  // useEffect(() => {
+  //   fetchInfo();
+  // }, []);
+  
+  useEffect(() => {
+    fetchUsers(searchTerm);
+  }, [searchTerm]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchUsers(searchTerm);
+  };
+
   return (
     <>
       <Helmet>
@@ -54,6 +70,16 @@ function Users() {
               </button>
               <button type="button" className="btn btn-sm btn-outline-secondary">Remove</button>
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6">
+            <form>
+              <div className="input-group mb-3">
+                <input type="text" className="form-control" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <button className="btn btn-outline-secondary" type="button" onClick={handleSearch}>Search</button>
+              </div>
+            </form>
           </div>
         </div>
         <div className="table-responsive">

@@ -36,3 +36,4 @@ async function findDepartmentByDeptId(id){
 }
 
 exports.findAllDepartments = findAllDepartments;
+exports.findDepartmentByDeptId = findDepartmentByDeptId;

@@ -77,6 +77,24 @@ router.get("/users", async (req, res) => {
   if (!req.session.role === "manager") {
     return res.status(401).json({ message: "Unauthorized" });
   }
+  let name = req.query.term;
+  console.log(name);
+  console.log(req.query)
+  if (name !== undefined) {
+    name = name.split(" ");
+    
+    const employees = await employeeService.findEmployeeByName(name[0], name[1]);
+    const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employees[0].emp_no);
+
+    const department = await departmentService.findDepartmentByDeptId(deptEmpl[0].dept_no);
+    return res.status(200).json({
+      emp_no: employees[0].emp_no,
+      first_name: employees[0].first_name,
+      last_name: employees[0].last_name,
+      department: department[0].dept_name,
+      hire_date: employees[0].hire_date,
+    });
+  }
 
   
   const employees = await employeeService.findAllEmployees();
