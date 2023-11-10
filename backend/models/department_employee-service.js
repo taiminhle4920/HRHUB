@@ -27,8 +27,13 @@ mongoose
   .catch((error) => console.log(error));
 
 
+async function findDepartmentEmployeeByEmpId(id){
+  return await deModel.find({emp_no: id});
+}
+
 async function findAllDepartmentEmployees(){
   return await deModel.find().limit(1000);
 }
 
+exports.findDepartmentEmployeeByEmpId = findDepartmentEmployeeByEmpId;
 exports.findAllDepartmentEmployees = findAllDepartmentEmployees;

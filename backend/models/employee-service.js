@@ -34,5 +34,14 @@ async function findAllEmployees(){
   return await empModel.find().limit(1000);
 }
 
+async function findEmployeeByName(first_name, last_name) {
+  return await empModel.find({
+    first_name: { $regex: new RegExp(first_name, 'i') }, // 'i' flag for case-insensitive
+    last_name: { $regex: new RegExp(last_name, 'i') },   // 'i' flag for case-insensitive
+  });
+}
+
+
 exports.findUser = findUser;
 exports.findAllEmployees = findAllEmployees;
+exports.findEmployeeByName = findEmployeeByName;
