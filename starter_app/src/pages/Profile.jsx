@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Jdenticon from '../components/Jdenticon';
 import useAuth from '../hooks/useAuth';
 import { useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
 function Profile() {
   const title = 'Profile';

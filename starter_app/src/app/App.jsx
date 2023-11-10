@@ -16,6 +16,7 @@ import Employeeid from '../pages/employeeid';
 import Profile from '../pages/Profile';
 import Dashboard from '../pages/Dashboard';
 import Apps from '../pages/Apps';
+import Salary from '../pages/Salary';
 import Users from '../pages/Users';
 import Settings from '../pages/Settings';
 import AuthProvider from '../hooks/AuthProvider';
@@ -45,6 +46,7 @@ function App() {
             <Route path="" element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
             <Route path="apps" element={<Apps />} />
+            <Route path="salary" element={<Salary />} />
             <Route path="settings" element={<Settings />} />
           </Route>
 

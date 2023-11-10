@@ -3,7 +3,7 @@ import React from 'react';
 
 
 import {
-  getSession, isAuth, login, logout, sendPasswordReset, setGoogleUser, getRole, getRoleFromEmployeeId, getUserProfile
+  getSession, isAuth, login, logout, sendPasswordReset, setGoogleUser, getRole, getRoleFromEmployeeId, getUserProfile, getUserSalary
 } from '../services/MockAuthService';
 
 const AuthContext = React.createContext(null);
@@ -20,6 +20,7 @@ function AuthProvider({ children, ...rest }) {
     getRole,
     getRoleFromEmployeeId,
     getUserProfile,
+    getUserSalary,
   };
 
   return (

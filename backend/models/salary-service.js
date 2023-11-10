@@ -26,8 +26,8 @@ mongoose
   )
   .catch((error) => console.log(error));
 
-async function findUser(id){
-    return await empModel.findUser({emp_no: id});
+async function findSalaryByEmployeeId(id){
+    return await empModel.find({emp_no: id});
 }
 
-exports.findUser = findUser;
+exports.findSalaryByEmployeeId = findSalaryByEmployeeId;

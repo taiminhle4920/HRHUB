@@ -32,7 +32,7 @@ async function findAllDepartments(){
 }
 
 async function findDepartmentByDeptId(id){
-  return await deptModel.findone({dept_no: });
+  return await deptModel.findone({dept_no: id});
 }
 
 exports.findAllDepartments = findAllDepartments;

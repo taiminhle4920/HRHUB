@@ -91,7 +91,7 @@ async function getUserProfile() {
 
 async function changeUserProfile() {
   const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
-    console.log("error getting user profile");
+    console.log("error modifing user profile");
     return null;
   });
   if (res.data != null)
@@ -100,9 +100,9 @@ async function changeUserProfile() {
     return null;
 }
 
-async function getUserPayroll() {
-  const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
-    console.log("error getting user profile");
+async function getUserSalary() {
+  const res = await axios.get(`http://localhost:8080/api/salary`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+    console.log("error getting user salary");
     return null;
   });
   if (res.data != null)
@@ -114,5 +114,5 @@ async function getUserPayroll() {
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected
 // in the useAuth hook.
 export {
-  getSession, isAuth, login, logout, sendPasswordReset, setGoogleUser, getRole, getRoleFromEmployeeId, getUserProfile
+  getSession, isAuth, login, logout, sendPasswordReset, setGoogleUser, getRole, getRoleFromEmployeeId, getUserProfile, getUserSalary
 };
