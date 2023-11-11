@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
-
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css";
+import './EditEmployeeProfile.css';
 function EditEmployeeProfile() {
     const [employeeId, setEmployeeId] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [department, setDepartment] = useState("");
-    const [birthDate, setBirthDate] = useState("");
+    const [birthDate, setBirthDate] = useState(null);
     const [title, setTitle] = useState("");
-    const [dep_from_date, setDep_from_date] = useState("");
-    const [dep_to_date, setDep_to_date] = useState("");
-    const [title_from_date, setTitle_from_date] = useState("");
-    const [title_to_date, setTitle_to_date] = useState("");
+    const [dep_from_date, setDep_from_date] = useState(null);
+    const [dep_to_date, setDep_to_date] = useState(null);
+    const [title_from_date, setTitle_from_date] = useState(null);
+    const [title_to_date, setTitle_to_date] = useState(null);
 
     // add more fields as needed
     const { id } = useParams();
@@ -27,12 +29,12 @@ function EditEmployeeProfile() {
             setFirstName(res.data.first_name);
             setLastName(res.data.last_name);
             setDepartment(res.data.department);
-            setBirthDate(res.data.birth_date);
+            setBirthDate(new Date(res.data.birth_date));
             setTitle(res.data.title);
-            setDep_from_date(res.data.dep_from_date);
-            setDep_to_date(res.data.dep_to_date);
-            setTitle_from_date(res.data.title_from_date);
-            setTitle_to_date(res.data.title_to_date);
+            setDep_from_date(new Date (res.data.dep_from_date));
+            setDep_to_date(new Date(res.data.dep_to_date));
+            setTitle_from_date(new Date (res.data.title_from_date));
+            setTitle_to_date(new Date (res.data.title_to_date));
         });
     };
 
@@ -50,23 +52,23 @@ function EditEmployeeProfile() {
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
     };
-    const handleBirthDateChange = (event) => {
-        setBirthDate(event.target.value);
+    const handleBirthDateChange = (date) => {
+        setBirthDate(date);
     };
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
     };
-    const handleDep_from_dateChange = (event) => {
-        setDep_from_date(event.target.value);
+    const handleDep_from_dateChange = (date) => {
+        setDep_from_date(date);
     };
-    const handleDep_to_dateChange = (event) => {
-        setDep_to_date(event.target.value);
+    const handleDep_to_dateChange = (date) => {
+        setDep_to_date(date);
     };
-    const handleTitle_from_dateChange = (event) => {
-        setTitle_from_date(event.target.value);
+    const handleTitle_from_dateChange = (date) => {
+        setTitle_from_date(date);
     };
-    const handleTitle_to_dateChange = (event) => {
-        setTitle_to_date(event.target.value);
+    const handleTitle_to_dateChange = (date) => {
+        setTitle_to_date(date);
     };
 
     const handleSubmit = async (event) => {
@@ -122,37 +124,46 @@ function EditEmployeeProfile() {
                     value={department}
                     onChange={handleDepartmentChange}
                 />
-                <input
-                    type="text"
-                    value={dep_from_date}
+                From Date: 
+                <DatePicker
+                    selected={dep_from_date}
                     onChange={handleDep_from_dateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="calendar-style"
                 />
-                <input
-                    type="text"
-                    value={dep_to_date}
+                To Date:
+                <DatePicker
+                    selected={dep_to_date}
                     onChange={handleDep_to_dateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="calendar-style"
                 />
             </label>
             <label>
                 Birth Date:
-                <input
-                    type="text"
-                    value={birthDate}
+                <DatePicker
+                    selected={birthDate}
                     onChange={handleBirthDateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="calendar-style"
                 />
             </label>
             <label>
                 Title:
                 <input type="text" value={title} onChange={handleTitleChange} />
-                <input
-                    type="text"
-                    value={title_from_date}
+                From Date: 
+                <DatePicker
+                    selected={title_from_date}
                     onChange={handleTitle_from_dateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="calendar-style"
                 />
-                <input
-                    type="text"
-                    value={title_to_date}
+                To Date:
+                <DatePicker
+                    selected={title_to_date}
                     onChange={handleTitle_to_dateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="calendar-style"
                 />
             </label>
 

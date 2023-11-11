@@ -156,5 +156,73 @@ router.get("/getemployeedata/:id", async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+router.post('/addemployee', async (req, res) => {
+  try {
+    // const curRole = req.session.role;
+    
+    // if (curRole !== "manager") {
+    //   return res.status(401).json({ message: "Unauthorized" });
+    // }
+
+    const { employeeId, birth_date, first_name, last_name, gender, title, from_date, to_date, dep_no, dep_name, role } = req.body;
+    console.log(employeeId)
+    console.log(dep_no)
+    const existingEmployee = await employeeService.findUser(employeeId);
+    console.log(existingEmployee);
+    if (existingEmployee) {
+      return res.status(403).json({ message: "Employee id already exists" });
+    }
+    const existingDepartment = await departmentService.findDepartmentByDeptId(dep_no);
+    
+    if (!existingDepartment) {
+      const addDeparment = await departmentService.addDepartment(dep_no, dep_name);
+
+    }
+    const res1 = await employeeService.addEmp(employeeId,birth_date,first_name,last_name,gender,from_date);
+    const res2 = await titleService.addTitle(employeeId, title, from_date, to_date);
+    let res3;
+    if(role === "manager")
+      res3 = await departmentManagerService.addDepManager(employeeId, dep_no, from_date, to_date);
+    else
+      res3 = await departmentEmployeeService.addDeptEmp(employeeId, dep_no, from_date, to_date);
+    if (res1 && res2 && res3)
+      return res.status(200).json({ message: "Employee added successfully" });
+    else
+      return res.status(500).json({ message: "Internal server error" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
   
+router.get('/empdistribution', async(req, res) => {
+  try{
+    const employees = await departmentEmployeeService.findAllDepartmentEmployeesNoLimit();
+    const departments = await departmentService.findAllDepartments();
+    const managers = await departmentManagerService.findAllManager();
+    const empCount = {};
+    employees.forEach(emp => {
+      const dept = departments.find(dep => dep.dept_no === emp.dept_no);
+
+      if (!empCount[dept.dept_name]) {
+        empCount[dept.dept_name] = 1;
+      } else {
+        empCount[dept.dept_name]++;
+      }
+    });
+    managers.forEach(manager => {
+      const dept = departments.find(dep => dep.dept_no === manager.dept_no);
+      if (!empCount[dept.dept_name]) {
+        empCount[dept.dept_name] = 1;
+      } else {
+        empCount[dept.dept_name]++;
+      }
+    });
+    return res.status(200).json({empCount});
+  } catch(error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 module.exports = router;
