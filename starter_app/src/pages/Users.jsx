@@ -64,9 +64,13 @@ function Users() {
         <div className="row">
           <div className="col-md-6">
             <form>
-              <div className="search-bar">
-                <input type="text" className="form-control" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+              <div className="row">
+              <div class="col-12 col-md-8">
+                <input type="text" className="form-control" placeholder="Employee name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
+                <div class="col-6 col-md-4">
                 <button className="search-button" type="button" onClick={handleSearch}>Search</button>
+                </div>
               </div>
             </form>
           </div>

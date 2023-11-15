@@ -32,10 +32,12 @@ function Dashboard() {
         <div
           className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div className="col p-4 d-flex flex-column position-static">
-            <strong className="d-inline-block mb-2 text-primary fs-5">@{user.employeeId}</strong>
+            <strong className="d-inline-block mb-2 text-primary fs-5">Welcome back, {user.first_name}</strong>
             <h3 className="mb-0">{user.first_name} {user.last_name}</h3>
-            <p className="card-text mb-auto text-muted">{user.employeeId}</p>
-            <p className="card-text mb-auto text-muted">{user.email}</p>
+            <p className="card-text mb-auto text-muted">employee id: {user.employeeId}</p>
+            <p className="card-text mb-auto text-muted">email: {user.email}</p>
+            <p className="card-text mb-auto text-muted">department: {user.email}</p>
+            <p className="card-text mb-auto text-muted">title: {user.email}</p>
             <div className="d-grid d-md-block mt-4">
               <button className="btn btn-outline-secondary btn-sm">Edit</button>
             </div>
