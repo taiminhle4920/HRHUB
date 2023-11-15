@@ -25,3 +25,24 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findDepartmentEmployeeByEmpId(id){
+  return await deModel.find({emp_no: id});
+}
+
+async function findAllDepartmentEmployees(){
+  return await deModel.find().limit(1000);
+}
+
+async function addDeptEmp(emp_no, dept_no, from_date, to_date){
+  return await deModel.create({emp_no:emp_no, dept_no:dept_no, from_date:from_date, to_date:to_date});
+}
+async function findAllDepartmentEmployeesNoLimit(){
+  return await deModel.find();
+}
+
+exports.findDepartmentEmployeeByEmpId = findDepartmentEmployeeByEmpId;
+exports.findAllDepartmentEmployees = findAllDepartmentEmployees;
+exports.addDeptEmp = addDeptEmp;
+exports.findAllDepartmentEmployeesNoLimit = findAllDepartmentEmployeesNoLimit; 

@@ -4,11 +4,9 @@ import './sidebar.css';
 
 function Sidebar() {
   const items = [
-    { path: '/console', title: 'Dashboard', icon: 'bi-house-door' },
-    { path: '/console/apps', title: 'Applications', icon: 'bi-layers' },
-    { path: '/console/addemployee', title: 'Add Employee', icon: 'bi-person-plus'},
-    { path: '/console/users', title: 'Users', icon: 'bi-people' },
-    { path: '/console/settings', title: 'Settings', icon: 'bi-gear' },
+    { path: '/employee', title: 'Dashboard', icon: 'bi-house-door' },
+    { path: '/employee/apps', title: 'Applications', icon: 'bi-layers' },
+    { path: '/employee/settings', title: 'Settings', icon: 'bi-gear' },
   ];
 
   return (

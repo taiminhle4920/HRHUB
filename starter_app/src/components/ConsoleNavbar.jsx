@@ -6,15 +6,15 @@ import { logout } from '../services/MockAuthService';
 
 import './console-navbar.css';
 import logo from './logo.svg';
+import Cookies from 'js-cookie';
 
 function ConsoleNavbar() {
   const navigate = useNavigate();
   const auth = useAuth();
   const user = auth.getSession();
-
+  
   const handleLogout = async (e) => {
     e.preventDefault();
-
     await logout();
     navigate('/');
   };

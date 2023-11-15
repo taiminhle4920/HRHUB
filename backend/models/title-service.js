@@ -25,3 +25,15 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findTitleByEmpId(id){
+    return await titleModel.find({emp_no: id});
+}
+
+async function addTitle(emp_no, title, from_date, to_date){
+  return await titleModel.create({emp_no:emp_no, title:title, from_date:from_date, to_date:to_date});
+}
+
+exports.addTitle = addTitle;
+exports.findTitleByEmpId = findTitleByEmpId;

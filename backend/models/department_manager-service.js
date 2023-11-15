@@ -28,8 +28,16 @@ mongoose
 
 
 async function findManager(employeeId) {
-  return await dmModel.find({ employeeId: employeeId });
+  return await dmModel.find({ emp_no: employeeId });
 }
 
+async function addDepManager(emp_no, dept_no, from_date, to_date) {
+  return await dmModel.create({ emp_no: emp_no, dept_no: dept_no, from_date: from_date, to_date: to_date });
+}
 
+async function findAllManager() {
+  return await dmModel.find();
+}
+exports.findAllManager = findAllManager;
 exports.findManager = findManager;
+exports.addDepManager = addDepManager;

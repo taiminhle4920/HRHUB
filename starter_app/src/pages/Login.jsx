@@ -25,7 +25,7 @@ function Login(){
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login, getRole} = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
 
@@ -38,27 +38,27 @@ function Login(){
 
   const handleLogin = async (e, data) => {
     // eslint-disable-next-line no-console
-    console.log(data.username, data.password);
+    // console.log(data.username, data.password);
     try {
-      setIsLoading(true);
+      //setIsLoading(true);
       //const token = await login(data.username, data.password);
 
-      const res = await axios.post(`http://localhost:8080/login`, {email: data.username, password: data.password});
-      //get token from response;
-      // eslint-disable-next-line no-console
-      console.log(res.data);
-      setIsLoading(false);
-      if(res.data.role === 'manager'){
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
+      //const res = await axios.post(`http://localhost:8080/api/login`, {email: data.username, password: data.password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
+      const res = await login(data.username, data.password);
+      //setIsLoading(false);
+      const role = getRole();
+      //console.log(role);
+      if(role === 'manager'){
+        // Cookies.set('token', res.data.token);
+        // Cookies.set('role', res.data.role);
+        // Cookies.set('employeeId', res.data.employeeId);
         navigate('/console');
       }else{
-        Cookies.set('token', res.data.token);
-        Cookies.set('role', res.data.role);
-        Cookies.set('employeeId', res.data.employeeId);
+        // Cookies.set('token', res.data.token);
+        // Cookies.set('role', res.data.role);
+        // Cookies.set('employeeId', res.data.employeeId);
         //temporarily navigate to profile page, need to change to /employee
-        navigate('/profile');
+        navigate('/employee');
       }
 
     } catch (err) {
@@ -102,8 +102,7 @@ function Login(){
         <Form noValidate>
           <i className="bi bi-file-lock-fill auth-icon my-4"/>
           <p className="mb-3 fw-normal">
-            Click <strong>Log in</strong> button to log into the admin console.
-            Use <strong>admin</strong>:<strong>qwerty</strong> to log in.
+            Click <strong>Log in</strong> button to log in to user console
           </p>
           <Form.Group className="form-floating" controlId="inputUsername">
             <FormControl type="text"

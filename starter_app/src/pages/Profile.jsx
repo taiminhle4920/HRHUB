@@ -9,24 +9,17 @@ import Cookies from 'js-cookie';
 function Profile() {
   const title = 'Profile';
 
-  const token = Cookies.get('token'); // Replace with the actual name of your token cookie
-  const employeeId = Cookies.get('employeeId'); // Replace with the actual name of your employeeId cookie
-  const role = Cookies.get('role'); // Replace with the actual name of your role cookie
+  const { getUserProfile } = useAuth();
+  const [user, setUser] = useState({});
 
-  const config = {
-    headers: {
-      'token': `${token}`,
-      'employeeId': employeeId,
-      'role': role,
-    },
-  };
-  const [user, setUserData] = useState({});
   const fetchInfo = async () => {
-    return await axios.get('http://localhost:8080/profile', config, { withCredentials: true }).then((res) => setUserData(res.data));
+    const userData = await getUserProfile();
+    setUser(userData);
   };
   useEffect(() => {
     fetchInfo();
   }, []);
+
   return (
     <>
       <Helmet>
@@ -37,7 +30,7 @@ function Profile() {
           className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div className="col p-4 d-flex flex-column position-static">
             <strong className="d-inline-block mb-2 text-primary fs-5">@{user.employeeId}</strong>
-            <h3 className="mb-0">{user.firstName} {user.lastName}</h3>
+            <h3 className="mb-0">{user.first_name} {user.last_name}</h3>
             <p className="card-text mb-auto text-muted">Employee ID: {user.employeeId}</p>
             <p className="card-text mb-auto text-muted">Email: {user.email}</p>
             <p className="card-text mb-auto text-muted">Date Of Birth: {user.birth_date}</p>

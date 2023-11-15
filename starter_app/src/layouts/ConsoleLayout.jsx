@@ -4,15 +4,21 @@ import Footer from '../components/Footer';
 import ConsoleNavbar from '../components/ConsoleNavbar';
 import Sidebar from '../components/Sidebar';
 import useAuth from '../hooks/useAuth';
-
+import Cookies from 'js-cookie';
 function ConsoleLayout() {
   const auth = useAuth();
   const { pathname } = useLocation();
+  
+  // const role = Cookies.get('role');
+  // const employeeId = Cookies.get('employeeId');
+  // const expires = Cookies.get('expires');
 
-  if (auth.isAuth()) {
+  const role = auth.getRole();
+  if (role && role === 'manager'){
     return (
       <>
         <ConsoleNavbar />
+
         <div className="container-fluid">
           <div className="row">
             <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">

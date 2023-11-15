@@ -25,3 +25,22 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+
+
+async function findAllDepartments(){
+  return await deptModel.find();
+}
+
+async function findDepartmentByDeptId(id){
+  return await deptModel.find({dept_no:id });
+}
+
+async function addDepartment(dept_no, dept_name){
+  return await deptModel.create({dept_no:dept_no, dept_name:dept_name});
+}
+
+
+
+exports.findAllDepartments = findAllDepartments;
+exports.findDepartmentByDeptId = findDepartmentByDeptId;
+exports.addDepartment = addDepartment;

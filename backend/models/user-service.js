@@ -31,39 +31,25 @@ async function findUserById(id){
   return await userModel.find({employeeId: id});
 }
 
+async function findAllUsers(){
+  return await userModel.find();
+}
 async function findUserByEmail(email) {
   return await userModel.find({ email: email });
 }
 
-async function findOrCreateUser(entry) {
-  const doc1 = await userModel.findOne({
-     query: {googleId: entry.googleId},
-    });
-
-  const doc2 = await userModel.findOne({
-      email: entry.email
-     });
-  
-
-  if (doc1 || doc2){
-    if (doc1)
-      return doc1
-    else
-      return doc2
-  }
-  else{
-    const doc = await userModel.create({
-      employeeId: entry.employeeId, 
-      email: entry.email.toLowerCase(), 
-      password: entry.password, 
-      google_id: entry.googleId});
-    
-    return doc;
-  }
-}
-
 async function findUserByObjectId(id) {
   return await userModel.findOne({_id: new ObjectId(id)});
+}
+
+async function findUserByEmployeeId(id) {
+  return await userModel.findOne({'employeeId': id});
+}
+
+async function findUserByEmailAndUpdate(email, query) {
+  return await userModel.updateOne(
+    { email: email },
+    { $set: query });
 }
 
 async function addUser(employeeId, email, password, googleId){
@@ -79,4 +65,6 @@ exports.findUserByObjectId = findUserByObjectId;
 exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
 exports.addUse = addUser;
-exports.findOrCreateUser = findOrCreateUser;
+exports.findAllUsers = findAllUsers;
+exports.findUserByEmployeeId = findUserByEmployeeId;
+exports.findUserByEmailAndUpdate = findUserByEmailAndUpdate;

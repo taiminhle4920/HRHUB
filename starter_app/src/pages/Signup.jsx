@@ -11,6 +11,8 @@ import { emailPattern, namePattern } from '../common/constants';
 import useAuth from '../hooks/useAuth';
 import GoogleButton from 'react-google-button'
 
+import Cookies from 'js-cookie';
+
 import './signup.css';
 
 import axios from 'axios';
@@ -37,7 +39,7 @@ function Signup() {
       setIsLoading(true);
       //const user = await addUser(data);
       console.log(data.employeeId, data.email, data.password)
-      const res = await axios.post(`http://localhost:8080/signup`, {employeeId: data.employeeId, email: data.email, password: data.password});
+      const res = await axios.post(`http://localhost:8080/api/signup`, {employeeId: data.employeeId, email: data.email, password: data.password});
 
       // eslint-disable-next-line no-console
       console.log(`signup successful, user: ${res.data.email}`);
@@ -55,16 +57,14 @@ function Signup() {
   const redirectToGoogleSSO = async () =>{
     let timer = null;
     const googleLoginURL = `http://localhost:8080/api/login/google`
-    const newWindow = window.open(googleLoginURL, "_blank", "width=500, height=600");
-    if (newWindow) {
-      timer = await setInterval(() => {
-        if (newWindow.closed) {
-          console.log("Yay we're authenticated");
-          const user = isAuth();
-          if (timer) clearInterval(timer);
-        }
-      }, 500);
-    }
+    //const newWindow = window.open(googleLoginURL, "_blank", "width=500, height=600, rel=opener");
+    window.location.href = googleLoginURL;
+    // if (newWindow) {
+    //   timer = await setInterval(() => {
+    //     console.log(Cookies.get("session"))
+        
+    //   }, 500);
+    // }
   }
 
 
