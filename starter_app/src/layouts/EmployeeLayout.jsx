@@ -8,10 +8,6 @@ import Cookies from 'js-cookie';
 function EmployeeLayout() {
   const auth = useAuth();
   const { pathname } = useLocation();
-  // const role = Cookies.get('role');
-  // const employeeId = Cookies.get('employeeId');
-  // const expires = Cookies.get('expires');
-  
   const role = auth.getRole();
   if (role && role === 'employee'){
     return (

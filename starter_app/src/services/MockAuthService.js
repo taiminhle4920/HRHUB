@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 
-const keyUser = 'authx.user';
-
+const keyUser = 'auth';
+const userProfile = 'profile';
+const userSalary = 'salary';
 
 function setUser(user) {
   console.log(user);
@@ -10,7 +11,6 @@ function setUser(user) {
     email: user.email,
     role: user.role !== null ? user.role : null,
   };
-
   localStorage.setItem(keyUser, JSON.stringify(currentUser));
 }
 
@@ -54,7 +54,6 @@ function isAuth() {
 
 async function login(username, password) {
   const res = await axios.post(`http://localhost:8080/api/login`, {email: username, password: password}, {withCredentials: true, headers: {'Content-Type': 'application/json'}});
-  //console.log(res);
   setUser(res.data.user);
   return res;
 }
@@ -66,6 +65,8 @@ async function logout() {
   });
   console.log(res)
   localStorage.removeItem(keyUser);
+  localStorage.removeItem(userProfile);
+  localStorage.removeItem(userSalary);
   return;
 }
 
@@ -79,20 +80,21 @@ async function sendPasswordReset() {
 }
 
 async function getUserProfile() {
-  const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
-    console.log("error getting user profile");
-    return null;
-  });
-  if (res.data != null)
-    return res.data;
-  else
-    return null;
+    const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+      console.log("error getting user profile");
+      return null;
+    });
+    if (res.data != null){
+      return res.data;
+    }
+    else
+      return null;
 }
 
 async function changeUserProfile() {
   const res = await axios.get(`http://localhost:8080/api/profile`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
     console.log("error modifing user profile");
-    return null;
+    return err;
   });
   if (res.data != null)
     return res.data;
@@ -101,14 +103,15 @@ async function changeUserProfile() {
 }
 
 async function getUserSalary() {
-  const res = await axios.get(`http://localhost:8080/api/salary`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
-    console.log("error getting user salary");
-    return null;
-  });
-  if (res.data != null)
-    return res.data;
-  else
-    return null;
+    const res = await axios.get(`http://localhost:8080/api/salary`, {withCredentials: true, headers: {'Content-Type': 'application/json'}}).catch((err) => {
+      console.log("error getting user salary");
+      return err;
+    });
+    if (res.data != null){
+      return res.data;
+    }
+    else
+      return null;
 }
 
 // The useAuth hook is a wrapper to this service, make sure exported functions are also reflected

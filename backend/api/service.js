@@ -1,6 +1,10 @@
 const express = require("express")
 const userService = require('../models/user-service')
 const employeeService = require('../models/employee-service')
+const departmentManagerService = require('../models/department_manager-service')
+const departmentService = require('../models/department-service')
+const departmentEmployeeService = require('../models/department_employee-service')
+const titleService = require('../models/title-service')
 const salaryService = require('../models/salary-service')
 
 const { isUserAuthenticated } = require("../middlewares/auth");
@@ -12,17 +16,24 @@ router.get("/profile", isUserAuthenticated, async (req, res) => {
     const employeeId = sessionUser.employeeId;
     
     const user = await userService.findUserById(employeeId);
-    const data = await employeeService.findUser(employeeId);
-    console.log(user);
-    console.log(data);
+    const employee = await employeeService.findUser(employeeId);
+    const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employeeId);
+    const department = await departmentService.findDepartmentByDeptId(deptEmpl[0].dept_no);
+    const title = await titleService.findTitleByEmpId(employeeId);
 
-    if(user && data){
+    if(user && employee){
       const resJson = {
         employeeId: employeeId,
-        firstName: data.first_name,
-        lastName: data.last_name,
-        birth_date: data.birth_date,
+        firstName: employee.first_name,
+        lastName: employee.last_name,
         email: user[0].email,
+        department: department[0].dept_name,
+        birth_date: employee.birth_date,
+        title: title[0].title,
+        dep_from_date: deptEmpl[0].from_date,
+        dep_to_date: deptEmpl[0].to_date,
+        title_from_date: title[0].from_date,
+        title_to_date: title[0].to_date
       };
 
       console.log(resJson);
@@ -40,18 +51,11 @@ router.get("/profile", isUserAuthenticated, async (req, res) => {
     const data = await salaryService.findSalaryByEmployeeId(employeeId);
 
     if(data){
-      // const resJson = {
-      //   employeeId: employeeId,
-      //   firstName: data.first_name,
-      //   lastName: data.last_name,
-      //   birth_date: data.birth_date,
-      //   email: user[0].email,
-      // };
       console.log(data);
       return res.status(200).json(data);
     }
     else{
-      return res.status(404).json({message: "User not found"});
+      return res.status(404).json({message: "salary record not found"});
     }
   });
   
