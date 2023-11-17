@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react';''
 import { Helmet } from 'react-helmet';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -8,11 +8,9 @@ import {
 import StatusAlert from '../components/StatusAlert';
 import useAuth from '../hooks/useAuth';
 import useForm from '../hooks/useForm';
-
+import GoogleButton from 'react-google-button'
 import './auth.css';
 
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
 function redirectPath(search) {
   const match = search.match(/redirect=(.*)/);
@@ -31,10 +29,15 @@ function Login(){
 
   const alertOpts = useRef({ isShow: false, message: '' });
 
-  const handleDismiss = () => {
-    alertOpts.current.isShow = false;
-  };
+  // const handleDismiss = () => {
+  //   alertOpts.current.isShow = false;
+  // };
 
+  const redirectToGoogleSSO = async () =>{
+    let timer = null;
+    const googleLoginURL = `http://localhost:8080/api/login/google`
+    window.location.href = googleLoginURL;
+  }
 
   const handleLogin = async (e, data) => {
     // eslint-disable-next-line no-console
@@ -144,12 +147,17 @@ function Login(){
             <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" hidden={!isLoading} />
             <span className="px-2">Log in</span>
           </Button>
+          <div className="container-signup">
+        <GoogleButton 
+            onClick={() => { redirectToGoogleSSO() }}/>
+      </div>
         </Form>
+        
       </main>
       <StatusAlert show={alertOpts.current.isShow}
                    variant="failure"
                    message={alertOpts.current.message}
-                   onDismiss={handleDismiss}
+                  //  onDismiss={handleDismiss}
       />
     </>
   );

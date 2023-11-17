@@ -57,14 +57,7 @@ function Signup() {
   const redirectToGoogleSSO = async () =>{
     let timer = null;
     const googleLoginURL = `http://localhost:8080/api/login/google`
-    //const newWindow = window.open(googleLoginURL, "_blank", "width=500, height=600, rel=opener");
     window.location.href = googleLoginURL;
-    // if (newWindow) {
-    //   timer = await setInterval(() => {
-    //     console.log(Cookies.get("session"))
-        
-    //   }, 500);
-    // }
   }
 
 

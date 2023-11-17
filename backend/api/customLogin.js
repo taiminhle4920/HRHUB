@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
     const{email, password} = req.body;
     console.log(email, password);
     const user = await userService.findUserByEmail(email);
-    if(!user){
+    if(!user[0]){
       return res.status(404).json({message: "User not found"});
     }
   
