@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-
+import "./Users.css";
 import Jdenticon from '../components/Jdenticon';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -56,17 +56,21 @@ function Users() {
           <h1 className="h2">{title}</h1>
           <div className="btn-toolbar mb-2 mb-md-0">
             <div className="btn-group me-2">
-              <button type="button" className="btn btn-sm btn-outline-secondary">Create</button>
-              <button type="button" className="btn btn-sm btn-outline-secondary">Remove</button>
+                <Link to="/console/addemployee"><button type="button" className="btn btn-sm btn-outline-secondary" >Create</button></Link>
+ 
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-md-6">
             <form>
-              <div className="input-group mb-3">
-                <input type="text" className="form-control" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <button className="btn btn-outline-secondary" type="button" onClick={handleSearch}>Search</button>
+              <div className="row">
+              <div class="col-12 col-md-8">
+                <input type="text" className="form-control" placeholder="Employee name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
+                <div class="col-6 col-md-4">
+                <button className="search-button" type="button" onClick={handleSearch}>Search</button>
+                </div>
               </div>
             </form>
           </div>

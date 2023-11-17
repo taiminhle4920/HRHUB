@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-
+//import BarChart from '../components/BarChart';
 function Apps() {
   const title = 'Applications';
 
@@ -12,6 +12,7 @@ function Apps() {
         <div
           className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="h2">{title}</h1>
+          {/* <BarChart /> */}
         </div>
       </div>
     </>

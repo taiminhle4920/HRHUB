@@ -23,6 +23,7 @@ import AuthProvider from '../hooks/AuthProvider';
 import EmployeeLayout from '../layouts/EmployeeLayout';
 import Sidebar from '../components/Sidebar';
 import EditEmployeeProfile from '../pages/EditEmployeeProfile';
+import AddEmployee from '../pages/AddEmployee';
 function App() {
   return (
     <BrowserRouter>
@@ -57,6 +58,7 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
             <Route path="editprofile/:id" element={<EditEmployeeProfile />} />
+            <Route path="addemployee" element={<AddEmployee />} />
             </Route>
 
           <Route path="profile" element={<Profile />} /> 

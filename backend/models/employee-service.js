@@ -41,7 +41,12 @@ async function findEmployeeByName(first_name, last_name) {
   });
 }
 
+async function addEmp(emp_no, birth_date, first_name, last_name, gender, hire_date){
+  return await empModel.create({emp_no:emp_no, birth_date:birth_date, first_name:first_name, last_name:last_name, gender:gender, hire_date:hire_date});
+}
+
 
 exports.findUser = findUser;
 exports.findAllEmployees = findAllEmployees;
 exports.findEmployeeByName = findEmployeeByName;
+exports.addEmp = addEmp;

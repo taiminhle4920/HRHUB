@@ -8,6 +8,11 @@ import {
 
 const AuthContext = React.createContext(null);
 
+// const isAuth = async () =>{
+  
+// }
+
+
 function AuthProvider({ children, ...rest }) {
   // AuthContext to encapsulate these functions, which are wrappers to the services service.
   const auth = {
