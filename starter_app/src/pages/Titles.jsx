@@ -2,38 +2,19 @@ import { Helmet } from 'react-helmet';
 import React, { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useEffect } from 'react';
-import Jdenticon from '../components/Jdenticon';
-import  LineGraph from '../components/LineGraph';
-import { parseISO, add, differenceInMilliseconds, format } from 'date-fns';
+
 
 function Salary() {
-  const title = 'Salary history';
+  const title = 'Title history';
 
-  const { getUserSalary } = useAuth();
-  const [userSalary, setUserSalary] = useState({});
-  const [chartData, setChartData] = useState([]);
-
+  const { getUserTitles } = useAuth();
+  const [userTitles, setUserTitles] = useState({});
   const fetchInfo = async () => {
-    const data = await getUserSalary();
-    setUserSalary(data);
-
-    let graphData = []
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        let entry1 = { x: data[key]["from_date"], y: data[key]['salary'] }
-        let entry2 = { x: data[key]["to_date"], y: data[key]['salary'] }
-
-        graphData.push(entry1)
-        graphData.push(entry2)
-      }
-    }
-    setChartData(graphData);
+    const data = await getUserTitles();
+    setUserTitles(data);
   };
-
-
   useEffect(() => {
     fetchInfo();
-    console.log(chartData)
   }, []);
 
   function TableRow({ users }) {
@@ -47,10 +28,7 @@ function Salary() {
               users.map((user, i) => (
                 <tr key={i} className="align-middle">
                   <td>{i}</td>
-                  <td>{new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        }).format(user.salary)}</td>
+                  <td>{user.title}</td>
                   <td>{user.from_date}</td>
                   <td>{user.to_date}</td>
                 </tr>
@@ -79,17 +57,16 @@ function Salary() {
             <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">salary</th>
+              <th scope="col">title</th>
               <th scope="col">from_date</th>
               <th scope="col">to_date</th>
             </tr>
             </thead>
             <tbody>
-              <TableRow users={userSalary}/>
+              <TableRow users={userTitles}/>
             </tbody>
           </table>
         </div>
-        <LineGraph key={chartData} chartData={chartData}/>
       </div>
     </>
   );

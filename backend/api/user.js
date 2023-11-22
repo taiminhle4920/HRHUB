@@ -198,9 +198,12 @@ router.post('/addemployee', async (req, res) => {
   
 router.get('/empdistribution', async(req, res) => {
   try{
+    console.log("finding empdistribution is called");
     const employees = await departmentEmployeeService.findAllDepartmentEmployeesNoLimit();
+    console.log("test2")
     const departments = await departmentService.findAllDepartments();
     const managers = await departmentManagerService.findAllManager();
+
     const empCount = {};
     employees.forEach(emp => {
       const dept = departments.find(dep => dep.dept_no === emp.dept_no);
@@ -219,6 +222,7 @@ router.get('/empdistribution', async(req, res) => {
         empCount[dept.dept_name]++;
       }
     });
+    console.log(empCount);
     return res.status(200).json({empCount});
   } catch(error) {
     console.log(error);

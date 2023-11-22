@@ -88,6 +88,9 @@ function AddEmployee() {
 
     return (
         <form onSubmit={handleSubmit} className="add-employee-form">
+            <div class="form-row">
+                <div class="row">
+                    <div class="form-group col-md-4">
                         <label>
                             Employee ID:
                             <input
@@ -96,6 +99,8 @@ function AddEmployee() {
                                 onChange={handleEmployeeIdChange}
                             />
                         </label>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label>
                             First Name:
                             <input
@@ -104,19 +109,27 @@ function AddEmployee() {
                                 onChange={handleFirstNameChange}
                             />
                         </label>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label>
                             Last Name:
                             <input type="text" value={last_name} onChange={handleLastNameChange} />
                         </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
                         <label>
-                            Birth Date:
-                           <DatePicker
+                            Date of Birth:
+                            <DatePicker
                                 selected={birth_date}
                                 onChange={handleBirth_dateChange}
                                 dateFormat="yyyy-MM-dd"
                                 className="calendar-style"
                             />
                         </label>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>
                             Gender:
                             <select value={gender} onChange={handleGenderChange}>
@@ -125,52 +138,55 @@ function AddEmployee() {
                                 <option value="B">B</option>
                             </select>
                         </label>
-                        <label>
-                            Department:
-                            <input
-                                type="text"
-                                value={dep_no}
-                                onChange={handleDep_noChange}
-                            />
-                            Department Name (optional - to create new department):
-                            <input
-                                type="text"
-                                value={dep_name}
-                                onChange={handleDep_nameChange}
-                            />
-                        </label>
+                    </div>
+                </div>
+                <label>
+                    Department:
+                    <input
+                        type="text"
+                        value={dep_no}
+                        onChange={handleDep_noChange}
+                    />
+                    Department Name (optional - to create new department):
+                    <input
+                        type="text"
+                        value={dep_name}
+                        onChange={handleDep_nameChange}
+                    />
+                </label>
 
-                        <label>
-                            Title:
-                            <input type="text" value={title} onChange={handleTitleChange} />
-                        </label>
-                        <label>
-                            From Date: 
-                            <DatePicker
-                                selected={from_date}
-                                onChange={handle_from_dateChange}
-                                dateFormat="yyyy-MM-dd"
-                                className="calendar-style"
-                            />
-                        </label>
-                        <label>
-                            To Date: 
-                            <DatePicker
-                                selected={to_date}
-                                onChange={handle_to_dateChange}
-                                dateFormat="yyyy-MM-dd"
-                                className="calendar-style"
-                            />
-                        </label>
-                        <label>
-                            Role:
-                            <select value={role} onChange={handleRoleChange}>
-                                <option value="employee">Employee</option>
-                                <option value="manager">Manager</option>
-                            </select>
-                        </label>
-            {/* add more fields as needed */}
-            <button type="submit">Submit Changes</button>
+                <label>
+                    Title:
+                    <input type="text" value={title} onChange={handleTitleChange} />
+                </label>
+                <label>
+                    From Date:
+                    <DatePicker
+                        selected={from_date}
+                        onChange={handle_from_dateChange}
+                        dateFormat="yyyy-MM-dd"
+                        className="calendar-style"
+                    />
+                </label>
+                <label>
+                    To Date:
+                    <DatePicker
+                        selected={to_date}
+                        onChange={handle_to_dateChange}
+                        dateFormat="yyyy-MM-dd"
+                        className="calendar-style"
+                    />
+                </label>
+                <label>
+                    Role:
+                    <select value={role} onChange={handleRoleChange}>
+                        <option value="employee">Employee</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                </label>
+                {/* add more fields as needed */}
+                <button type="submit">Submit Changes</button>
+            </div>
         </form>
     );
 }

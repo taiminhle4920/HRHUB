@@ -17,6 +17,7 @@ import Profile from '../pages/Profile';
 import Dashboard from '../pages/Dashboard';
 import Apps from '../pages/Apps';
 import Salary from '../pages/Salary';
+import Titles from '../pages/Titles';
 import Users from '../pages/Users';
 import Settings from '../pages/Settings';
 import AuthProvider from '../hooks/AuthProvider';
@@ -24,6 +25,8 @@ import EmployeeLayout from '../layouts/EmployeeLayout';
 import Sidebar from '../components/Sidebar';
 import EditEmployeeProfile from '../pages/EditEmployeeProfile';
 import AddEmployee from '../pages/AddEmployee';
+// import PieGraph from '../components/PieGraph';
+
 function App() {
   return (
     <BrowserRouter>
@@ -48,6 +51,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="apps" element={<Apps />} />
             <Route path="salary" element={<Salary />} />
+            <Route path="titles" element={<Titles />} />
             <Route path="settings" element={<Settings />} />
           </Route>
 

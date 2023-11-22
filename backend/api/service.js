@@ -58,5 +58,19 @@ router.get("/profile", isUserAuthenticated, async (req, res) => {
       return res.status(404).json({message: "salary record not found"});
     }
   });
+
+    router.get("/titles", isUserAuthenticated, async (req, res) => { 
+    const sessionUser = req.session.user;
+    const employeeId = sessionUser.employeeId;
+
+    const data = await titleService.findTitleByEmpId(employeeId);
+    if(data){
+      console.log(data);
+      return res.status(200).json(data);
+    }
+    else{
+      return res.status(404).json({message: "salary record not found"});
+    }
+  });
   
 module.exports = router;
