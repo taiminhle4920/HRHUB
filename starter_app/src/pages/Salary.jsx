@@ -15,8 +15,9 @@ function Salary() {
 
   const fetchInfo = async () => {
     const data = await getUserSalary();
+    data.sort((a, b) => new Date(a["from_date"]) - new Date(b["from_date"]))
+    
     setUserSalary(data);
-
     let graphData = []
     for (var key in data) {
       if (data.hasOwnProperty(key)) {

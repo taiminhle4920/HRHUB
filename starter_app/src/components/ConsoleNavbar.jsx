@@ -50,9 +50,6 @@ function ConsoleNavbar() {
               </button>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu">
                 <li>
-                  <a className="dropdown-item" href='/console/profile'>Profile</a>
-                </li>
-                <li>
                   <button className="dropdown-item" onClick={handleLogout}>Logout</button>
                 </li>
               </ul>
