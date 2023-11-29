@@ -5,6 +5,7 @@ const employeeService = require('../models/employee-service')
 const departmentManagerService = require('../models/department_manager-service')
 const departmentService = require('../models/department-service')
 const departmentEmployeeService = require('../models/department_employee-service')
+const statisticService = require('../models/statistic-service')
 const titleService = require('../models/title-service')
 const router = express.Router();
 
@@ -198,32 +199,44 @@ router.post('/addemployee', async (req, res) => {
   
 router.get('/empdistribution', async(req, res) => {
   try{
-    console.log("finding empdistribution is called");
-    const employees = await departmentEmployeeService.findAllDepartmentEmployeesNoLimit();
-    console.log("test2")
-    const departments = await departmentService.findAllDepartments();
-    const managers = await departmentManagerService.findAllManager();
+    // const employees = await departmentEmployeeService.findAllDepartmentEmployeesNoLimit();
+    // const departments = await departmentService.findAllDepartments();
+    // const managers = await departmentManagerService.findAllManager();
 
-    const empCount = {};
-    employees.forEach(emp => {
-      const dept = departments.find(dep => dep.dept_no === emp.dept_no);
+    // const empCount = {};
+    // employees.forEach(emp => {
+    //   const dept = departments.find(dep => dep.dept_no === emp.dept_no);
 
-      if (!empCount[dept.dept_name]) {
-        empCount[dept.dept_name] = 1;
-      } else {
-        empCount[dept.dept_name]++;
+    //   if (!empCount[dept.dept_name]) {
+    //     empCount[dept.dept_name] = 1;
+    //   } else {
+    //     empCount[dept.dept_name]++;
+    //   }
+    // });
+    // managers.forEach(manager => {
+    //   const dept = departments.find(dep => dep.dept_no === manager.dept_no);
+    //   if (!empCount[dept.dept_name]) {
+    //     empCount[dept.dept_name] = 1;
+    //   } else {
+    //     empCount[dept.dept_name]++;
+    //   }
+    // });
+    empCount = {
+        'Development': 85710,
+        'Sales': 52247,
+        'Production': 73489,
+        'Human Resources': 17788,
+        'Research': 21128,
+        'Quality Management': 20121,
+        'Customer Service': 23584,
+        'Marketing': 20213,
+        'Finance': 17348,
+        'Engineering': 2
       }
-    });
-    managers.forEach(manager => {
-      const dept = departments.find(dep => dep.dept_no === manager.dept_no);
-      if (!empCount[dept.dept_name]) {
-        empCount[dept.dept_name] = 1;
-      } else {
-        empCount[dept.dept_name]++;
-      }
-    });
-    console.log(empCount);
-    return res.status(200).json({empCount});
+
+    const stats = await statisticService.createOrUpdateStat("empCount", JSON.stringify(empCount))
+    console.log(stats.data);
+    return res.status(200).json(empCount);
   } catch(error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

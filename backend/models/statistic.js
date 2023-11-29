@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 
 const StatisticSchema = new mongoose.Schema({
     label: {
-        type: Number,
+        type: String,
         require: true,
     },
     data: {
-        type: Array,
-        default: [],
+        type: String,
+        default: '',
     },
 
 }, {collection : 'Statistic'});
 
 
-const Salary = mongoose.model("Statistic", StatisticSchema);
+const Statistic = mongoose.model("Statistic", StatisticSchema);
 
-module.exports = StatisticSchema;
+module.exports = Statistic;

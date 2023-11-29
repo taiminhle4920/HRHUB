@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const empModel = require("./statisitc");
+const statModel = require("./statistic");
 const dotenv = require("dotenv");
 
 
@@ -26,4 +26,24 @@ mongoose
   )
   .catch((error) => console.log(error));
 
+async function findStat(label){
+  const entry = statModel.findOne({label: label});
+  if (entry)
+    return entry
+  return {}
+}
 
+async function createOrUpdateStat(label, stats){
+  const entry = await statModel.findOne({label: label});
+  if (entry)
+    return entry
+  else{
+    return await statModel.create({
+      label: label, 
+      data: stats
+    });
+  }
+};
+
+exports.findStat = findStat;
+exports.createOrUpdateStat = createOrUpdateStat;
