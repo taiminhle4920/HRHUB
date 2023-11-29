@@ -4,7 +4,7 @@
   height: 32px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   .navbar-logo {
     animation: navbar-logo-spin infinite 20s linear;
   }
@@ -17,4 +17,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

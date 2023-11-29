@@ -25,6 +25,7 @@ import EmployeeLayout from '../layouts/EmployeeLayout';
 import Sidebar from '../components/Sidebar';
 import EditEmployeeProfile from '../pages/EditEmployeeProfile';
 import AddEmployee from '../pages/AddEmployee';
+import SalaryManager from '../pages/SalaryManager';
 // import PieGraph from '../components/PieGraph';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <Route path="forgot" element={<ForgotPassword />} />
             <Route path="not-found" element={<NotFound />} />
             <Route path="employeeid" element={<Employeeid/>}/>
+            <Route path="salary" element={<SalaryManager/>}/>
             <Route path="*" element={<Navigate to="/not-found" />} />
           </Route>
 
