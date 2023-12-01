@@ -242,4 +242,22 @@ router.get('/empdistribution', async(req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+router.get("/searchSalary", isUserAuthenticated, async (req, res) => { 
+  const sessionUser = req.session.user;
+  const employeeId = sessionUser.employeeId;
+  console.log(req.params.id);
+  const employee = await employeeService.findUser(req.params.id);
+  employeeId = employee.emp_no
+  const data = await salaryService.findSalaryByEmployeeId(employeeId);
+
+  if(data){
+    console.log(data);
+    return res.status(200).json(data);
+  }
+  else{
+    return res.status(404).json({message: "salary record not found"});
+  }
+});
+
 module.exports = router;
