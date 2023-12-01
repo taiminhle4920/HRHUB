@@ -120,7 +120,6 @@ async function getStatistic() {
       return err;
     });
     if (res.data != null){
-      console(res.data)
       return res.data;
     }
     else

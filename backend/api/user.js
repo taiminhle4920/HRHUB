@@ -6,6 +6,7 @@ const departmentManagerService = require('../models/department_manager-service')
 const departmentService = require('../models/department-service')
 const departmentEmployeeService = require('../models/department_employee-service')
 const statisticService = require('../models/statistic-service')
+const salaryService = require('../models/salary-service')
 const titleService = require('../models/title-service')
 const router = express.Router();
 
@@ -243,21 +244,31 @@ router.get('/empdistribution', async(req, res) => {
   }
 });
 
-router.get("/searchSalary", isUserAuthenticated, async (req, res) => { 
-  const sessionUser = req.session.user;
-  const employeeId = sessionUser.employeeId;
-  console.log(req.params.id);
-  const employee = await employeeService.findUser(req.params.id);
-  employeeId = employee.emp_no
-  const data = await salaryService.findSalaryByEmployeeId(employeeId);
+router.get("/getEmployeeSalary", isUserAuthenticated, async (req, res) => { 
+    if (!req.session.role === "manager") {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  let name = req.query.term;
+  console.log(name);
+  console.log(req.query)
 
-  if(data){
-    console.log(data);
-    return res.status(200).json(data);
+  if (name !== undefined) {
+    name = name.split(" ");
   }
-  else{
-    return res.status(404).json({message: "salary record not found"});
-  }
+
+  const employee = await employeeService.findEmployeeByName(name[0], name[1]);
+ if (employee.length > 0){
+    const employeeId = employee[0].emp_no;
+    const data = await salaryService.findSalaryByEmployeeId(employeeId);
+
+    if(data){
+      console.log(data);
+      return res.status(200).json(data);
+    }
+    else{
+      return res.status(404).json({message: "salary record not found"});
+    }
+ }
 });
 
 module.exports = router;

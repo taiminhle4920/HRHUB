@@ -61,8 +61,6 @@ function Users() {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-6">
             <form>
               <div className="row">
               <div class="col-12 col-md-8">
@@ -73,8 +71,6 @@ function Users() {
                 </div>
               </div>
             </form>
-          </div>
-        </div>
         <div className="table-responsive">
           <table className="table table-striped table-sm">
             <thead>

@@ -44,7 +44,6 @@ function App() {
             <Route path="forgot" element={<ForgotPassword />} />
             <Route path="not-found" element={<NotFound />} />
             <Route path="employeeid" element={<Employeeid/>}/>
-            <Route path="salary" element={<SalaryManager/>}/>
             <Route path="*" element={<Navigate to="/not-found" />} />
           </Route>
 
@@ -65,6 +64,7 @@ function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="editprofile/:id" element={<EditEmployeeProfile />} />
             <Route path="addemployee" element={<AddEmployee />} />
+            <Route path="salary" element={<SalaryManager/>}/>
             </Route>
 
           <Route path="profile" element={<Profile />} /> 

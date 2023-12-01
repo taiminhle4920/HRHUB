@@ -21,9 +21,23 @@ function Apps() {
 });
 
   const fetchInfo = async () => {
-    console.log("tset1")
     const data = await getStatistic();
-    setChartData(data);
+    console.log(data)
+    let graphData = []
+    let graphLabel = []
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        graphLabel.push(key)
+        graphData.push(data[key])
+      }
+    }
+    setChartData({
+    datasets: [{
+        data: graphData,
+        backgroundColor: ["#ffa3a3", "#ffc5a3", "#fff6a3", "#e2ffa3", "#b3ffa3", "#a3ffce", "#a3fffa", "#a3d6ff", "#a3a9ff", "#cba3ff"]
+    }],
+    labels: graphLabel,
+  });
   };
   useEffect(() => {
     fetchInfo();
@@ -39,7 +53,9 @@ function Apps() {
           className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="h2">{title}</h1>
         </div>
+        <div class="w-100 p-3">
         { <PieGraph chartData={chartData}/> }
+        </div>
       </div>
     </>
   );

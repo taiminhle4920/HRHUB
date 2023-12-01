@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Jdenticon from '../components/Jdenticon';
 import  LineGraph from '../components/LineGraph';
 import { parseISO, add, differenceInMilliseconds, format } from 'date-fns';
+import axios from 'axios';
 
 function SalaryManager() {
   const title = 'Salary history';
@@ -15,39 +16,32 @@ function SalaryManager() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetchUsers = async (term) => {
-    const url = term ? `http://localhost:8080/api/users?term=${term}` : 'http://localhost:8080/api/users';
-    return await axios.get(url, { withCredentials: true }).then((res) => {setUsers(res.data);});
+    const url = term ? `http://localhost:8080/api/getEmployeeSalary?term=${term}` : 'http://localhost:8080/api/getEmployeeSalary';
+    return await axios.get(url, { withCredentials: true }).then((res) => {
+      const data = res.data;
+      data.sort((a, b) => new Date(a["from_date"]) - new Date(b["from_date"]))
+      setUserSalary(data);
+
+      let graphData = []
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          let entry1 = { x: data[key]["from_date"], y: data[key]['salary'] }
+          let entry2 = { x: data[key]["to_date"], y: data[key]['salary'] }
+
+          graphData.push(entry1)
+          graphData.push(entry2)
+        }
+      }
+      setChartData(graphData);
+    });
   };
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setUsers([]);
+    setUserSalary([]);
     await fetchUsers(searchTerm);
   };
 
-  const fetchInfo = async () => {
-    const data = await getUserSalary();
-    data.sort((a, b) => new Date(a["from_date"]) - new Date(b["from_date"]))
-    
-    setUserSalary(data);
-    let graphData = []
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        let entry1 = { x: data[key]["from_date"], y: data[key]['salary'] }
-        let entry2 = { x: data[key]["to_date"], y: data[key]['salary'] }
-
-        graphData.push(entry1)
-        graphData.push(entry2)
-      }
-    }
-    setChartData(graphData);
-  };
-
-
-  useEffect(() => {
-    //fetchInfo();
-    //console.log(chartData)
-  }, []);
 
   function TableRow({ users }) {
         if (!users || !Array.isArray(users)) { // add a check to make sure users is an array
