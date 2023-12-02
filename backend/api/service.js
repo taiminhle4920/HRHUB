@@ -13,8 +13,10 @@ const router = express.Router();
 
 router.get("/profile", isUserAuthenticated, async (req, res) => { 
     const sessionUser = req.session.user;
-    const employeeId = sessionUser.employeeId;
-    
+    let employeeId = sessionUser.employeeId;
+    if(!employeeId){
+      employeeId = req.get('employeeId');
+    }
     const user = await userService.findUserById(employeeId);
     const employee = await employeeService.findUser(employeeId);
     const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employeeId);
@@ -36,12 +38,10 @@ router.get("/profile", isUserAuthenticated, async (req, res) => {
         title_to_date: title[0].to_date
       };
 
-      console.log(resJson);
+
       return res.status(200).json(resJson);
     }
-    else{
-      return res.status(404).json({message: "User not found"});
-    }
+
   });
 
   router.get("/salary", isUserAuthenticated, async (req, res) => { 
@@ -54,9 +54,7 @@ router.get("/profile", isUserAuthenticated, async (req, res) => {
       console.log(data);
       return res.status(200).json(data);
     }
-    else{
-      return res.status(404).json({message: "salary record not found"});
-    }
+
   });
 
     router.get("/titles", isUserAuthenticated, async (req, res) => { 
