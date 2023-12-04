@@ -6,7 +6,7 @@ function Sidebar() {
   const items = [
     { path: '/employee', title: 'Dashboard', icon: 'bi-house-door' },
     { path: '/employee/salary', title: 'Salary', icon: 'bi bi-cash' },
-    { path: '/employee/titles', title: 'titles', icon: 'bi bi-person-lines-fill' },
+    { path: '/employee/titles', title: 'Titles', icon: 'bi bi-person-lines-fill' },
   ];
 
   return (
