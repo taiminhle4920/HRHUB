@@ -3,13 +3,14 @@ const mongoose = require('mongoose')
 const userService = require('../models/user-service')
 const employeeService = require('../models/employee-service')
 const departmentManagerService = require('../models/department_manager-service')
-
+const session1 = require('express-session')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { session } = require('passport')
 
 
 const router = express.Router();
+
 
 function isEmail(email) {
     var emailFormat = /^[a-zA-Z0-9_.+]*[a-zA-Z][a-zA-Z0-9_.+]*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -26,17 +27,13 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({message: "User not found"});
     }
   
-    const checkPassword = bcrypt.compare(password, user[0].password);
+    const checkPassword = await bcrypt.compare(password, user[0].password);
     
     if(!checkPassword){
       return res.status(401).json({message: "Incorrect password"});
     }
     const manager = await departmentManagerService.findManager(user[0].employeeId);
     const role = manager.length > 0 ? "manager" : "employee";
-    const token = jwt.sign({email}, 'jwt-secret-token', {expiresIn: '1h'});
-  //   res.cookie('token', token);
-  //   res.cookie('role', role);
-  //   res.cookie('employeeId', user[0].employeeId);
     const sessionUser = {
       email: email,
       role: role,
@@ -45,7 +42,8 @@ router.post('/login', async (req, res) => {
     req.session.user = sessionUser;
     req.user = sessionUser;
     // req.session.user = sessionUser
-    res.json(req.session)
+
+    return res.status(200).json(req.session);
     // return res.json({message: "Login from backend", Status: "Success", role: role, employeeId: user[0].employeeId});
   });
   
@@ -78,10 +76,13 @@ router.post('/login', async (req, res) => {
     }
     const existedUserWithId = await employeeService.findUser(employeeId);
     const existedUserWithEmail = await userService.findUserByEmail(email);
+    console.log(existedUserWithId);
+
     if (existedUserWithEmail.length > 0) {
       return res.status(409).send("User Already Exist. Please Login");
     }
-    if (existedUserWithId.length === 0) {
+    if (!existedUserWithId) {
+      console.log("Employee ID does not exist");
       return res.status(404).send("Employee ID does not exist");
     }
     else if(!isEmail(email)){

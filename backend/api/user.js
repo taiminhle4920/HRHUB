@@ -77,11 +77,15 @@ router.post("/auth/uploadEmployeeId", isUserAuthenticated, async (req, res) => {
 
 
 router.get("/users", async (req, res) => {
-  if (!req.session.role === "manager") {
+  const sessionUser = req.session.user;
+  const role = sessionUser.role;
+  console.log(role);
+  if (role === "employee") {
     return res.status(401).json({ message: "Unauthorized" });
   }
+  // console.log(req.session.user.role);
   let name = req.query.term;
-  console.log(name);
+  
   console.log(req.query)
   if (name !== undefined) {
     name = name.split(" ");
@@ -168,8 +172,6 @@ router.post('/addemployee', async (req, res) => {
     // }
 
     const { employeeId, birth_date, first_name, last_name, gender, title, from_date, to_date, dep_no, dep_name, role } = req.body;
-    console.log(employeeId)
-    console.log(dep_no)
     const existingEmployee = await employeeService.findUser(employeeId);
     console.log(existingEmployee);
     if (existingEmployee) {
@@ -199,7 +201,7 @@ router.post('/addemployee', async (req, res) => {
 });
   
 router.get('/empdistribution', async(req, res) => {
-  try{
+
     // const employees = await departmentEmployeeService.findAllDepartmentEmployeesNoLimit();
     // const departments = await departmentService.findAllDepartments();
     // const managers = await departmentManagerService.findAllManager();
@@ -238,10 +240,7 @@ router.get('/empdistribution', async(req, res) => {
     const stats = await statisticService.createOrUpdateStat("empCount", JSON.stringify(empCount))
     console.log(stats.data);
     return res.status(200).json(empCount);
-  } catch(error) {
-    console.log(error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
+
 });
 
 router.get("/getEmployeeSalary", isUserAuthenticated, async (req, res) => { 
@@ -261,7 +260,7 @@ router.get("/getEmployeeSalary", isUserAuthenticated, async (req, res) => {
     const employeeId = employee[0].emp_no;
     const data = await salaryService.findSalaryByEmployeeId(employeeId);
 
-    if(data){
+    if(data.length > 0){
       console.log(data);
       return res.status(200).json(data);
     }
