@@ -41,7 +41,10 @@ async function addDeptEmp(emp_no, dept_no, from_date, to_date){
 async function findAllDepartmentEmployeesNoLimit(){
   return await deModel.find();
 }
-
+async function updateDepartmentEmployee(emp_no, dept_no, from_date, to_date){
+  return await deModel.updateOne({emp_no: emp_no}, {dept_no: dept_no, from_date: from_date, to_date: to_date});
+}
+exports.updateDepartmentEmployee = updateDepartmentEmployee;
 exports.findDepartmentEmployeeByEmpId = findDepartmentEmployeeByEmpId;
 exports.findAllDepartmentEmployees = findAllDepartmentEmployees;
 exports.addDeptEmp = addDeptEmp;

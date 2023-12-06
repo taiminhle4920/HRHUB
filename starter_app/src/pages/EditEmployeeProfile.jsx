@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import './EditEmployeeProfile.css';
+
 function EditEmployeeProfile() {
     const [employeeId, setEmployeeId] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -73,26 +74,24 @@ function EditEmployeeProfile() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await fetch(`/api/editprofile/${employeeId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+        const formatedDepFromDate = dep_from_date.toISOString().split('T')[0];
+        const formatedDepToDate = dep_to_date.toISOString().split('T')[0];
+        const formatedTitleFromDate = title_from_date.toISOString().split('T')[0];
+        const formatedTitleToDate = title_to_date.toISOString().split('T')[0];
+        const formatedBirthDate = birthDate.toISOString().split('T')[0];
+        const response = await axios.put(`http://localhost:8080/api/editprofile/${employeeId}`, {
                 firstName,
                 lastName,
                 department,
-                birthDate,
+                birthDate : formatedBirthDate,
                 title,
-                dep_from_date,
-                dep_to_date,
-                title_from_date,
-                title_to_date
+                dep_from_date: formatedDepFromDate,
+                dep_to_date : formatedDepToDate,
+                title_from_date : formatedTitleFromDate,
+                title_to_date: formatedTitleToDate
                 // add more fields as needed
-            }),
         });
-        const data = await response.json();
-        console.log(data);
+    
     };
 
     return (

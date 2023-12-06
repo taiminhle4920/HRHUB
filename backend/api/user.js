@@ -91,23 +91,45 @@ router.get("/users", async (req, res) => {
     name = name.split(" ");
     
     const employee = await employeeService.findEmployeeByName(name[0], name[1]);
-    if (employee.length > 0){
-      const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employee[0].emp_no);
+    console.log(employee);
+    // if (employee.length > 0){
+    //   const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employee[0].emp_no);
+    //   if (deptEmpl.length > 0){
+    //     const department = await departmentService.findDepartmentByDeptId(deptEmpl[0].dept_no);
+    //     if (department.length > 0){
+    
+    //       const users = {
+    //         emp_no: employee[0].emp_no,
+    //         first_name: employee[0].first_name,
+    //         last_name: employee[0].last_name,
+    //         department: department[0].dept_name,
+    //         hire_date: employee[0].hire_date,
+    //       };
+    //       const returnVal = [users];
+    //       return res.status(200).json(returnVal);
+    //     }
+    //   }
+    // }
+    const users = [];
+    for (let i = 0; i < employee.length; i++) {
+      const deptEmpl = await departmentEmployeeService.findDepartmentEmployeeByEmpId(employee[i].emp_no);
       if (deptEmpl.length > 0){
         const department = await departmentService.findDepartmentByDeptId(deptEmpl[0].dept_no);
         if (department.length > 0){
-          const users = {
-            emp_no: employee[0].emp_no,
-            first_name: employee[0].first_name,
-            last_name: employee[0].last_name,
+    
+          const user = {
+            emp_no: employee[i].emp_no,
+            first_name: employee[i].first_name,
+            last_name: employee[i].last_name,
             department: department[0].dept_name,
-            hire_date: employee[0].hire_date,
+            hire_date: employee[i].hire_date,
           };
-          const returnVal = [users];
-          return res.status(200).json(returnVal);
+          users.push(user);
+          
         }
       }
     }
+    return res.status(200).json(users);
   }
   else{
 
@@ -170,8 +192,9 @@ router.post('/addemployee', async (req, res) => {
     // if (curRole !== "manager") {
     //   return res.status(401).json({ message: "Unauthorized" });
     // }
-
+    
     const { employeeId, birth_date, first_name, last_name, gender, title, from_date, to_date, dep_no, dep_name, role } = req.body;
+    console.log(from_date);
     const existingEmployee = await employeeService.findUser(employeeId);
     console.log(existingEmployee);
     if (existingEmployee) {
@@ -268,6 +291,20 @@ router.get("/getEmployeeSalary", isUserAuthenticated, async (req, res) => {
       return res.status(404).json({message: "salary record not found"});
     }
  }
+});
+
+router.put("/editprofile/:id", async (req, res) => {
+  console.log(req.body);
+  console.log(req.params.id);
+  const {firstName, lastName, department, birthDate, title, dep_from_date,dep_to_date, title_from_date, title_to_date} = req.body;
+  const employeeId = req.params.id;
+  const res1 = await employeeService.updateEmployee(employeeId, firstName, lastName, birthDate);
+  const res2 = await titleService.updateTitle(employeeId, title, title_from_date, title_to_date);
+  const res3 = await departmentEmployeeService.updateDepartmentEmployee(employeeId, department, dep_from_date, dep_to_date);
+  if (res1 && res2 && res3)
+    return res.status(200).json({ message: "Employee updated successfully" });
+  else
+    return res.status(500).json({ message: "Internal server error" });
 });
 
 module.exports = router;

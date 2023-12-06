@@ -58,16 +58,22 @@ function AddEmployee() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const formatedFromDate = from_date.toISOString().split('T')[0];
+        const formatedToDate = to_date.toISOString().split('T')[0];
+        const formatedBirthDate = birth_date.toISOString().split('T')[0];
+        console.log(formatedFromDate);
+        console.log(formatedToDate);
+        
         const response = await axios.post('http://localhost:8080/api/addemployee', {
             employeeId,
-            birth_date,
+            birth_date: formatedBirthDate,
             first_name,
             last_name,
             gender,
-
             title,
-            from_date,
-            to_date,
+            from_date: formatedFromDate,
+            // from_date,
+            to_date: formatedToDate,
             dep_no,
             dep_name,
             role,

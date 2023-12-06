@@ -35,5 +35,10 @@ async function addTitle(emp_no, title, from_date, to_date){
   return await titleModel.create({emp_no:emp_no, title:title, from_date:from_date, to_date:to_date});
 }
 
+async function updateTitle(emp_no, title, from_date, to_date){
+  return await titleModel.updateOne({emp_no: emp_no}, {title: title, from_date: from_date, to_date: to_date});
+}
+
+exports.updateTitle = updateTitle;
 exports.addTitle = addTitle;
 exports.findTitleByEmpId = findTitleByEmpId;
